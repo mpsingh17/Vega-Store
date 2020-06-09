@@ -1,0 +1,23 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using VegaCore.Infrastructure.Data;
+
+namespace VegaStore.UI.Extensions
+{
+    public static class ServiceExtensions
+    {
+        public static void ConfigureEFCoreContext(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<EFCoreContext>(
+                options => options.UseSqlServer(
+                    configuration.GetConnectionString("Default"),
+                    b => b.MigrationsAssembly("VegaStore.UI"))
+            );
+        }
+    }
+}

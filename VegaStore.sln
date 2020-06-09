@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VegaStore.UI", "VegaStore.UI\VegaStore.UI.csproj", "{47FB83C4-EC4C-4F28-BC40-A60E3F020709}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VegaStore.Core", "VegaStore.Core\VegaStore.Core.csproj", "{15516AEC-98EF-4076-A922-6A787A196EC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VegaCore.Infrastructure", "VegaCore.Infrastructure\VegaCore.Infrastructure.csproj", "{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{47FB83C4-EC4C-4F28-BC40-A60E3F020709}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47FB83C4-EC4C-4F28-BC40-A60E3F020709}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47FB83C4-EC4C-4F28-BC40-A60E3F020709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15516AEC-98EF-4076-A922-6A787A196EC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15516AEC-98EF-4076-A922-6A787A196EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15516AEC-98EF-4076-A922-6A787A196EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15516AEC-98EF-4076-A922-6A787A196EC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
