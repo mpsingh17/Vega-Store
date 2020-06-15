@@ -29,6 +29,7 @@ namespace VegaStore.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureEFCoreContext(Configuration);
+            services.ConfigureRepositoryManager();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
