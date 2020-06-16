@@ -9,6 +9,6 @@ namespace VegaStore.Core.Repositories
     public interface IMakeRepository : IRepository<Make>
     {
         Task<IEnumerable<Make>> GetAllMakesAsync(string userId, bool trackChanges);
-        Task<Make> GetSingleMakeAsync(string userId, Guid makeId, bool trackChanges);
+        Task<Make> GetSingleMakeAsync(string userId, int makeId, bool trackChanges);
     }
 }

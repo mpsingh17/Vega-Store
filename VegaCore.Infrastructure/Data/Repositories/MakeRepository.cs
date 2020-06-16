@@ -20,7 +20,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Make> GetSingleMakeAsync(string userId, Guid makeId, bool trackChanges)
+        public async Task<Make> GetSingleMakeAsync(string userId, int makeId, bool trackChanges)
         {
             return await FindByCondition(
                 m => m.UserId.Equals(userId) &&

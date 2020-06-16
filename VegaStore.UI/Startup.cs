@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VegaStore.UI.Extensions;
+using AutoMapper;
 
 namespace VegaStore.UI
 {
@@ -30,6 +31,8 @@ namespace VegaStore.UI
         {
             services.ConfigureEFCoreContext(Configuration);
             services.ConfigureRepositoryManager();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -66,7 +69,7 @@ namespace VegaStore.UI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireAuthorization();
                 endpoints.MapRazorPages();
             });
         }

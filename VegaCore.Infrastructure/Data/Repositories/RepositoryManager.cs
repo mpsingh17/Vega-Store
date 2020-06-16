@@ -19,6 +19,6 @@ namespace VegaStore.Infrastructure.Data.Repositories
 
         public IMakeRepository Makes => _makeRepository ?? (_makeRepository = new MakeRepository(_context));
 
-        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+        public async Task SaveAsync() => await _context.SaveChangesAsync();
     }
 }
