@@ -22,7 +22,7 @@ namespace VegaStore.UI.Extensions
         {
             services.AddDbContext<EFCoreContext>(
                 options => options.UseSqlServer(
-                    configuration.GetConnectionString("Default"),
+                    configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("VegaStore.UI"))
             );
         }
