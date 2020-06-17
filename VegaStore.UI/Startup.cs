@@ -31,6 +31,7 @@ namespace VegaStore.UI
         {
             services.ConfigureEFCoreContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.ConfigureServices();
 
             services.AddAutoMapper(typeof(Startup));
 
