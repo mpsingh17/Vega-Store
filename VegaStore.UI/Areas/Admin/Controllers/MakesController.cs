@@ -12,8 +12,9 @@ using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.ViewModels.MakeViewModels;
 
-namespace VegaStore.UI.Controllers
+namespace VegaStore.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class MakesController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -109,5 +110,23 @@ namespace VegaStore.UI.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var makeInDb = await _repository.Makes.GetSingleMakeAsync(userId, id, trackChanges: false);
+
+            if (makeInDb == null)
+            {
+                return NotFound();
+            }
+
+            _repository.Makes.Remove(makeInDb);
+            //await _repository.SaveAsync();
+
+            return NoContent();
+        }
     }
 }

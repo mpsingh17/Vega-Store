@@ -37,8 +37,10 @@ namespace VegaStore.UI
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -67,9 +69,17 @@ namespace VegaStore.UI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "admin_area",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller=Makes}/{action=Index}/{id?}")
+                .RequireAuthorization();
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireAuthorization();
+                    pattern: "{controller=Home}/{action=Index}/{id?}")
+                .RequireAuthorization();
+
                 endpoints.MapRazorPages();
             });
         }
