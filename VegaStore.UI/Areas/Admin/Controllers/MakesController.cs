@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using VegaCore.Infrastructure.Data;
+using VegaStore.Core.Constants;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.Services;
@@ -36,7 +37,6 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-        // GET: Makes
         public async Task<IActionResult> Index()
         {
             var userId = _userService.GetUserId(User);
@@ -45,55 +45,61 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             var result = _mapper.Map<IEnumerable<ListMakeViewModel>>(makes);
 
-            
+            _logger.LogInformation(LogEventId.Success, "{MakesCount} Makes have been sent.", result.Count());
             return View(result);
         }
 
-        // GET: Makes/Create
         public IActionResult Create()
         {
+            _logger.LogInformation(LogEventId.Success, "View to create Make requested.");
             return View();
         }
 
-        // POST: Makes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SaveMakeViewModel vm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var make = _mapper.Map<Make>(vm);
-                make.UserId = _userService.GetUserId(User);
-                make.CreatedAt = DateTime.Now;
-                make.UpdatedAt = DateTime.Now;
-
-                await _repository.Makes.AddAsync(make);
-                await _repository.SaveAsync();
-
-                return RedirectToAction(nameof(Index));
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make view model sent by client.");
+                return View(vm);
             }
-            return View(vm);
+
+            var make = _mapper.Map<Make>(vm);
+            make.UserId = _userService.GetUserId(User);
+            make.CreatedAt = DateTime.Now;
+            make.UpdatedAt = DateTime.Now;
+
+            await _repository.Makes.AddAsync(make);
+            await _repository.SaveAsync();
+
+            _logger.LogInformation(LogEventId.Success, "Make with ID = {MakeId} has been created.", make.Id);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Makes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
+            {
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
                 return NotFound();
+            }
 
             var userId = _userService.GetUserId(User);
 
             var make = await _repository.Makes.GetSingleMakeAsync(userId, (int)id, trackChanges: false);
 
             if (make == null)
+            {
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
                 return NotFound();
+            }
 
             var result = _mapper.Map<SaveMakeViewModel>(make);
 
             return View(result);
         }
 
-        // POST: Makes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SaveMakeViewModel vm)
@@ -103,16 +109,23 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             var makeInDb = await _repository.Makes.GetSingleMakeAsync(userId, id, trackChanges: true);
 
             if (makeInDb == null)
+            {
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
                 return NotFound();
+            }
 
             if (!ModelState.IsValid)
+            {
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make view model sent by client.");
                 return View(vm);
+            }
 
             _mapper.Map(vm, makeInDb);
             makeInDb.UpdatedAt = DateTime.Now;
 
             await _repository.SaveAsync();
 
+            _logger.LogInformation(LogEventId.Success, "Make with ID = {MakeId} has been updated.", makeInDb.Id); ;
             return RedirectToAction(nameof(Index));
         }
 
@@ -126,12 +139,14 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             if (makeInDb == null)
             {
+                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
                 return NotFound();
             }
 
             _repository.Makes.Remove(makeInDb);
             //await _repository.SaveAsync();
 
+            _logger.LogWarning(LogEventId.Success, "Make with ID = {MakeId} has been deleted.", makeInDb.Id);
             return NoContent();
         }
     }
