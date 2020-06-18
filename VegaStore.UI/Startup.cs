@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VegaStore.UI.Extensions;
 using AutoMapper;
+using VegaStore.UI.ActionFilters;
 
 namespace VegaStore.UI
 {

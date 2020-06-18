@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -14,6 +15,7 @@ using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.Services;
 using VegaStore.Core.ViewModels.MakeViewModels;
+using VegaStore.UI.ActionFilters;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
 {
@@ -49,20 +51,21 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return View(result);
         }
 
+        [ImportModelState]
         public IActionResult Create()
         {
-            _logger.LogInformation(LogEventId.Success, "View to create Make requested.");
             return View();
         }
-
+        
         [HttpPost]
+        [ExportModelState]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SaveMakeViewModel vm)
         {
             if (!ModelState.IsValid)
             {
                 _logger.LogWarning(LogEventId.Warning, "Invalid Make view model sent by client.");
-                return View(vm);
+                return RedirectToAction(nameof(Create));
             }
 
             var make = _mapper.Map<Make>(vm);
@@ -77,6 +80,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [ImportModelState]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -101,6 +105,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ExportModelState]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SaveMakeViewModel vm)
         {
@@ -117,7 +122,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
                 _logger.LogWarning(LogEventId.Warning, "Invalid Make view model sent by client.");
-                return View(vm);
+                return RedirectToAction(nameof(Edit));
             }
 
             _mapper.Map(vm, makeInDb);
