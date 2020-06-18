@@ -34,6 +34,8 @@ namespace VegaStore.UI
             services.ConfigureRepositoryManager();
             services.ConfigureServices();
 
+            services.AddScoped<CheckMakeExists>();
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<ApplicationDbContext>(options =>

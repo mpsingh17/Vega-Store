@@ -81,25 +81,12 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [ImportModelState]
-        public async Task<IActionResult> Edit(int? id)
+        [ServiceFilter(typeof(CheckMakeExists))]
+        public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
-                return NotFound();
-            }
+            Make makeInDb = HttpContext.Items[nameof(makeInDb)] as Make;
 
-            var userId = _userService.GetUserId(User);
-
-            var make = await _repository.Makes.GetSingleMakeAsync(userId, (int)id, trackChanges: false);
-
-            if (make == null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
-                return NotFound();
-            }
-
-            var result = _mapper.Map<SaveMakeViewModel>(make);
+            var result = _mapper.Map<SaveMakeViewModel>(makeInDb);
 
             return View(result);
         }
@@ -107,23 +94,10 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         [HttpPost]
         [ExportModelState]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(CheckMakeExists))]
         public async Task<IActionResult> Edit(int id, SaveMakeViewModel vm)
         {
-            var userId = _userService.GetUserId(User);
-            
-            var makeInDb = await _repository.Makes.GetSingleMakeAsync(userId, id, trackChanges: true);
-
-            if (makeInDb == null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
-                return NotFound();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make view model sent by client.");
-                return RedirectToAction(nameof(Edit));
-            }
+            Make makeInDb = HttpContext.Items[nameof(makeInDb)] as Make;
 
             _mapper.Map(vm, makeInDb);
             makeInDb.UpdatedAt = DateTime.Now;
@@ -136,20 +110,13 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
         [HttpDelete]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(CheckMakeExists))]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var userId = _userService.GetUserId(User);
-
-            var makeInDb = await _repository.Makes.GetSingleMakeAsync(userId, id, trackChanges: false);
-
-            if (makeInDb == null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", id);
-                return NotFound();
-            }
+            Make makeInDb = HttpContext.Items[nameof(makeInDb)] as Make;
 
             _repository.Makes.Remove(makeInDb);
-            //await _repository.SaveAsync();
+            await _repository.SaveAsync();
 
             _logger.LogWarning(LogEventId.Success, "Make with ID = {MakeId} has been deleted.", makeInDb.Id);
             return NoContent();
