@@ -4,10 +4,11 @@ using System.Text;
 
 namespace VegaStore.Core.Entities
 {
-    public class Make : EntityBase
+    public class Model : EntityBase
     {
         public string Name { get; set; }
 
-        public IList<Model> Models { get; set; }
+        public int MakeId { get; set; }
+        public Make Make { get; set; }
     }
 }
