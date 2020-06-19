@@ -36,6 +36,14 @@ namespace VegaStore.UI
 
             services.AddScoped<CheckMakeExists>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanAccessAdminArea", pb =>
+                {
+                    pb.RequireAuthenticatedUser().RequireRole("Admin");
+                });
+            });
+
             services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -78,7 +86,7 @@ namespace VegaStore.UI
                     name: "admin_area",
                     areaName: "Admin",
                     pattern: "Admin/{controller=Makes}/{action=Index}/{id?}")
-                .RequireAuthorization();
+                .RequireAuthorization("CanAccessAdminArea");
 
                 endpoints.MapControllerRoute(
                     name: "default",
