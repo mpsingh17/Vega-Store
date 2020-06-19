@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using VegaStore.UI.Extensions;
 using AutoMapper;
 using VegaStore.UI.ActionFilters;
-using VegaStore.UI.Data.Repositories;
 
 namespace VegaStore.UI
 {
@@ -35,7 +34,6 @@ namespace VegaStore.UI
             services.ConfigureRepositoryManager();
             services.ConfigureServices();
 
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<CheckMakeExists>();
 
             services.AddAutoMapper(typeof(Startup));
