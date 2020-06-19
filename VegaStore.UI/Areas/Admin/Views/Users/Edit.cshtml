@@ -1,0 +1,24 @@
+﻿@model EditUserViewModel
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h1>Edit User</h1>
+<hr />
+
+<form asp-action="Edit">
+
+    <div class="form-group">
+        <label asp-for="@Model.Roles"></label>
+
+        <select class="form-control"
+                asp-for="@Model.Roles"
+                asp-items="@Model.RoleSLIs"></select>
+
+        <span class="text-danger" asp-validation-for="@Model.Roles"></span>
+
+    </div>
+
+    <button type="submit" class="btn btn-success">Submit</button>
+</form>
+

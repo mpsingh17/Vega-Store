@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VegaStore.Core.ViewModels.MakeViewModels
+namespace VegaStore.UI.ViewModels.MakeViewModels
 {
     public class ListMakeViewModel
     {

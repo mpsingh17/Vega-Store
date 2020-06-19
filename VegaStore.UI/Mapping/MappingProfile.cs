@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Entities;
-using VegaStore.Core.ViewModels.MakeViewModels;
+using VegaStore.UI.ViewModels.MakeViewModels;
+using VegaStore.UI.ViewModels.UserViewModels;
 
 namespace VegaStore.UI.Mapping
 {
@@ -19,6 +21,8 @@ namespace VegaStore.UI.Mapping
             #region Model to ViewModel
             CreateMap<Make, ListMakeViewModel>()
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(m => m.CreatedAt.ToLongDateString()));
+
+            CreateMap<IdentityUser, ListUserViewModel>();
             #endregion
         }
     }

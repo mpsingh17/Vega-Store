@@ -14,7 +14,7 @@ using VegaStore.Core.Constants;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.Services;
-using VegaStore.Core.ViewModels.MakeViewModels;
+using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ActionFilters;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
