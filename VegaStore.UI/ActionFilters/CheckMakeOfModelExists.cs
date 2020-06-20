@@ -6,43 +6,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Constants;
-using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
-using VegaStore.Core.Services;
 using VegaStore.UI.ViewModels.ModelViewModels;
 
 namespace VegaStore.UI.ActionFilters
 {
-    public class CheckMakeExists : ActionFilterAttribute
+    public class CheckMakeOfModelExists : ActionFilterAttribute
     {
-        private readonly ILogger<CheckMakeExists> _logger;
+        private readonly ILogger<CheckMakeOfModelExists> _logger;
         private readonly IRepositoryManager _repository;
 
-        public CheckMakeExists(
-            ILogger<CheckMakeExists> logger,
+        public CheckMakeOfModelExists(
+            ILogger<CheckMakeOfModelExists> logger,
             IRepositoryManager repository)
         {
             _logger = logger;
             _repository = repository;
         }
-        
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var makeId = context.ActionArguments
-                .SingleOrDefault(x => x.Key.ToString().Contains("id")).Value as int?;
+            int? makeId = null;
 
-            if (makeId is null)
+            if (context.ActionArguments.TryGetValue("vm", out object value)
+                && value is SaveModelViewModel vm)
             {
-                if (context.ActionArguments.TryGetValue("vm", out object value)
-                    && value is SaveModelViewModel vm)
-                {
-                    makeId = vm.MakeId;
-                }
+                makeId = vm.MakeId;
             }
 
             var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
 
-            if(makeId is null)
+            if (makeId is null)
             {
                 _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", makeId);
                 context.Result = new ViewResult
@@ -54,7 +48,7 @@ namespace VegaStore.UI.ActionFilters
 
             var makeInDb = _repository.Makes.GetSingleMakeAsync((int)makeId, trackChanges).Result;
 
-            if(makeInDb is null)
+            if (makeInDb is null)
             {
                 _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", makeId);
                 context.Result = new ViewResult
@@ -63,8 +57,6 @@ namespace VegaStore.UI.ActionFilters
                     ViewName = "NotFound"
                 };
             }
-
-            context.HttpContext.Items.Add(nameof(makeInDb), makeInDb);
 
             base.OnActionExecuting(context);
         }

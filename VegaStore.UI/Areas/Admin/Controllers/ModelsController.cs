@@ -68,19 +68,12 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         [HttpPost]
         [ExportModelState]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(CheckMakeOfModelExists))]
         public async Task<IActionResult> Create(CreateModelViewModel vm)
         {
             if(!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Create));
-            }
-
-            var makeInDb = await _repository.Makes
-                .GetSingleMakeAsync(vm.MakeId, trackChanges: false);
-
-            if(makeInDb is null)
-            {
-                return NotFound("Make not found.");
             }
 
             var userId = _userService.GetUserId(User);
@@ -124,19 +117,12 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         [ExportModelState]
         [ValidateAntiForgeryToken]
         [ServiceFilter(typeof(CheckModelExists))]
+        [ServiceFilter(typeof(CheckMakeOfModelExists))]
         public async Task<IActionResult> Edit(EditModelViewModel vm, int id)
         {
             if(!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Edit), new { id });
-            }
-
-            var makeInDb = await _repository.Makes
-                .GetSingleMakeAsync(vm.MakeId, trackChanges: false);
-
-            if (makeInDb is null)
-            {
-                return NotFound("Make not found.");
             }
 
             Model modelInDb = HttpContext.Items[nameof(modelInDb)] as Model;
