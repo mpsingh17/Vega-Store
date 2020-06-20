@@ -10,5 +10,6 @@ namespace VegaStore.Core.Repositories
     {
         IEnumerable<Model> Models { get; }
         Task<Model> GetSingleModelAsync(int id, bool trackChanges);
+        Task<Model> GetSingleModelAsync(string userId, int id, bool trackChanges);
     }
 }

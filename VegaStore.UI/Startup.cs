@@ -35,6 +35,7 @@ namespace VegaStore.UI
             services.ConfigureServices();
 
             services.AddScoped<CheckMakeExists>();
+            services.AddScoped<CheckModelExists>();
 
             services.AddAuthorization(options =>
             {

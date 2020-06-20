@@ -8,6 +8,8 @@ namespace VegaStore.Core.Repositories
     public interface IRepositoryManager
     {
         IMakeRepository Makes { get; }
+        IModelRepository Models { get; }
+
         Task SaveAsync();
     }
 }

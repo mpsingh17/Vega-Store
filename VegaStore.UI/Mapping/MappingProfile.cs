@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Entities;
 using VegaStore.UI.ViewModels.MakeViewModels;
+using VegaStore.UI.ViewModels.ModelViewModels;
 using VegaStore.UI.ViewModels.UserViewModels;
 
 namespace VegaStore.UI.Mapping
@@ -16,6 +17,10 @@ namespace VegaStore.UI.Mapping
         {
             #region ViewModel to Model
             CreateMap<SaveMakeViewModel, Make>().ReverseMap();
+
+            CreateMap<CreateModelViewModel, Model>();
+            CreateMap<EditModelViewModel, Model>();
+
             #endregion
 
             #region Model to ViewModel
@@ -23,6 +28,10 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(m => m.CreatedAt.ToLongDateString()));
 
             CreateMap<IdentityUser, ListUserViewModel>();
+
+            CreateMap<Model, ListModelViewModel>()
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(m => m.CreatedAt.ToLongDateString()))
+                .ForMember(vm => vm.Make, opt => opt.MapFrom(m => m.Make.Name));
             #endregion
         }
     }
