@@ -9,6 +9,7 @@ namespace VegaStore.Core.Repositories
     {
         IMakeRepository Makes { get; }
         IModelRepository Models { get; }
+        IFeatureRepository Features { get; }
 
         Task SaveAsync();
     }
