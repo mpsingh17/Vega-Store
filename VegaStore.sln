@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VegaStore.UI", "VegaStore.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VegaStore.Core", "VegaStore.Core\VegaStore.Core.csproj", "{15516AEC-98EF-4076-A922-6A787A196EC1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VegaStore.Infrastructure", "VegaCore.Infrastructure\VegaStore.Infrastructure.csproj", "{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VegaStore.Infrastructure", "VegaStore.Infrastructure\VegaStore.Infrastructure.csproj", "{30838A74-236B-4A5F-8752-20F48ACB79D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{15516AEC-98EF-4076-A922-6A787A196EC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15516AEC-98EF-4076-A922-6A787A196EC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15516AEC-98EF-4076-A922-6A787A196EC1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4426AB2D-8C42-4BF0-90FA-5FA99C6CB679}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30838A74-236B-4A5F-8752-20F48ACB79D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30838A74-236B-4A5F-8752-20F48ACB79D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30838A74-236B-4A5F-8752-20F48ACB79D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30838A74-236B-4A5F-8752-20F48ACB79D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
