@@ -15,6 +15,7 @@ namespace VegaCore.Infrastructure.Data
 
         public DbSet<Make> Makes { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Feature> Features { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,7 @@ namespace VegaCore.Infrastructure.Data
 
             modelBuilder.ApplyConfiguration(new MakeConfiguration());
             modelBuilder.ApplyConfiguration(new ModelConfiguration());
+            modelBuilder.ApplyConfiguration(new FeatureConfiguration());
         }
     }
 }
