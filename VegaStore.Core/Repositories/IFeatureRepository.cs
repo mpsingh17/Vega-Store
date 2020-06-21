@@ -9,6 +9,6 @@ namespace VegaStore.Core.Repositories
     public interface IFeatureRepository : IRepository<Feature>
     {
         Task<IEnumerable<Feature>> GetAllFeaturesAsync(bool trackChanges);
-        Task<Feature> GetSingleFeatureAsync(string id, bool trackChanges);
+        Task<Feature> GetSingleFeatureAsync(int id, bool trackChanges);
     }
 }

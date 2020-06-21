@@ -20,7 +20,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Feature> GetSingleFeatureAsync(string id, bool trackChanges)
+        public async Task<Feature> GetSingleFeatureAsync(int id, bool trackChanges)
         {
             return await FindByCondition(f => f.Id.Equals(id), trackChanges)
                 .SingleOrDefaultAsync();
