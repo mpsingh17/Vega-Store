@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VegaCore.Infrastructure\VegaStore.Infrastructure.csproj" />
+    <ProjectReference Include="..\VegaStore.Infrastructure\VegaStore.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VegaCore.Infrastructure.Data;
+using VegaStore.Infrastructure.Data;
 using VegaStore.Core.Constants;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
