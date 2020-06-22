@@ -8,6 +8,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200615100230_AddUserIdColumnToEntityBase.cs" />
     <Compile Remove="Migrations\20200615100230_AddUserIdColumnToEntityBase.Designer.cs" />
+    <Compile Remove="Migrations\20200622091846_AddVehicleModel.cs" />
+    <Compile Remove="Migrations\20200622091846_AddVehicleModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

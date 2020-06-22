@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace VegaStore.Core.Entities
@@ -10,5 +11,7 @@ namespace VegaStore.Core.Entities
 
         public int MakeId { get; set; }
         public Make Make { get; set; }
+
+        public ICollection<Vehicle> Vehicles { get; set; } = new Collection<Vehicle>();
     }
 }
