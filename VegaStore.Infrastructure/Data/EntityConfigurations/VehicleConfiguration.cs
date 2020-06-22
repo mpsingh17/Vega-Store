@@ -46,6 +46,11 @@ namespace VegaStore.Infrastructure.Data.EntityConfigurations
                 .HasForeignKey(v => v.ModelId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(v => v.VehicleFeatures)
+                .WithOne(vf => vf.Vehicle)
+                .HasForeignKey(vf => vf.VehicleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion
         
         }

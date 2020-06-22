@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace VegaStore.Core.Entities
@@ -28,6 +30,8 @@ namespace VegaStore.Core.Entities
 
         public int ModelId { get; set; }
         public Model Model { get; set; }
+
+        public ICollection<VehicleFeature> VehicleFeatures { get; set; } = new Collection<VehicleFeature>();
 
     }
 }

@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20200615100230_AddUserIdColumnToEntityBase.Designer.cs" />
     <Compile Remove="Migrations\20200622091846_AddVehicleModel.cs" />
     <Compile Remove="Migrations\20200622091846_AddVehicleModel.Designer.cs" />
+    <Compile Remove="Migrations\20200622094048_AddVehicleFeatureModelAndRelationship.cs" />
+    <Compile Remove="Migrations\20200622094048_AddVehicleFeatureModelAndRelationship.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

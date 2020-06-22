@@ -26,6 +26,7 @@ namespace VegaCore.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new ModelConfiguration());
             modelBuilder.ApplyConfiguration(new FeatureConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleConfiguration());
+            modelBuilder.ApplyConfiguration(new VehicleFeatureConfiguration());
         }
     }
 }
