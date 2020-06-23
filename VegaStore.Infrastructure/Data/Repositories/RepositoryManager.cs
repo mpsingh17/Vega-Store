@@ -15,6 +15,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
         private MakeRepository _makeRepository;
         private ModelRepository _modelRepository;
         private FeatureRepository _featureRepository;
+        private VehicleRepository _vehicleRepository;
 
         public RepositoryManager(EFCoreContext context)
         {
@@ -26,6 +27,8 @@ namespace VegaStore.Infrastructure.Data.Repositories
         public IModelRepository Models => _modelRepository ?? (_modelRepository = new ModelRepository(_context));
         
         public IFeatureRepository Features => _featureRepository ?? (_featureRepository = new FeatureRepository(_context));
+        
+        public IVehicleRepository Vehicles => _vehicleRepository ?? (_vehicleRepository = new VehicleRepository(_context));
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
     }
