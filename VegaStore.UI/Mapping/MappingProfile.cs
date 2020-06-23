@@ -9,6 +9,7 @@ using VegaStore.UI.ViewModels.FeatureViewModels;
 using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ViewModels.ModelViewModels;
 using VegaStore.UI.ViewModels.UserViewModels;
+using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Mapping
 {
@@ -39,6 +40,11 @@ namespace VegaStore.UI.Mapping
             CreateMap<Feature, ListFeatureViewModel>()
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(f => f.CreatedAt.ToLongDateString()));
             CreateMap<Feature, EditFeatureViewModel>();
+
+            CreateMap<Vehicle, ListVehicleViewModel>()
+                .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
+                .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
             #endregion
         }
     }
