@@ -8,12 +8,12 @@ namespace VegaStore.Core.Entities
 {
     public enum Colors
     {
-        Red, Green, Black
+        Red = 1, Green, Black
     }
 
     public enum Condition
     {
-        New, Old
+        New = 1, Old
     }
 
     public class Vehicle : EntityBase
