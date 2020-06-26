@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
+using VegaStore.Core.Services;
+using VegaStore.UI.ActionFilters;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
@@ -17,13 +19,16 @@ namespace VegaStore.UI.Areas.Admin.Controllers
     {
         private readonly ILogger<VehiclesController> _logger;
         private readonly IRepositoryManager _repository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public VehiclesController(
             ILogger<VehiclesController> logger,
             IRepositoryManager repository,
+            IUserService userService,
             IMapper mapper)
         {
+            _userService = userService;
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
@@ -38,6 +43,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return View(result);
         }
 
+        [ImportModelState]
         public IActionResult Create()
         {
             var vm = new CreateVehicleViewModel
@@ -49,5 +55,40 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             return View(vm);
         }
+
+        [HttpPost]
+        [ExportModelState]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateVehicleViewModel vm)
+        {
+            if(!ModelState.IsValid)
+                return RedirectToAction(nameof(Create));
+
+            var modelInDb = await _repository.Models.GetSingleModelAsync(vm.ModelId, trackChanges: false);
+            if(modelInDb is null)
+            {
+                ModelState.AddModelError(nameof(vm.ModelId), "Invalid model selected.");
+                return RedirectToAction(nameof(Create));
+            }
+
+            var vehicleToCreate = new Vehicle
+            {
+                Name = vm.Name,
+                Price = Convert.ToDecimal(vm.Price),
+                ModelId = vm.ModelId,
+                Color = vm.Color,
+                Condition = vm.Condition,
+                IsRegistered = vm.IsRegistered,
+                UserId = _userService.GetUserId(User),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            };
+
+            await _repository.Vehicles.AddAsync(vehicleToCreate);
+            await _repository.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
