@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,8 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
 
         public string Name { get; set; }
 
-        public bool IsRegistered { get; set; }
+        [Display(Name = "Registered")]
+        public string IsRegistered { get; set; }
 
         public string Color { get; set; }
 
