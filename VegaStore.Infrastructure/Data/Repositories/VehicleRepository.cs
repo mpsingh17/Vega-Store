@@ -20,6 +20,20 @@ namespace VegaStore.Infrastructure.Data.Repositories
                 .Include(v => v.Model)
                 .ToListAsync();
         }
+        
+        public async Task<Vehicle> GetSingleVehicleAsync(int id, bool includeRelated, bool trackChanges)
+        {
+            var query = FindByCondition(v => v.Id.Equals(id), trackChanges);
+
+            if (includeRelated)
+                return await query
+                    .Include(v => v.Model)
+                    .Include(v => v.VehicleFeatures)
+                        .ThenInclude(vf => vf.Feature)
+                    .SingleOrDefaultAsync();
+
+            return await query.SingleOrDefaultAsync();
+        }
 
         public async Task<Vehicle> GetSingleVehicleAsync(int id, bool trackChanges)
         {

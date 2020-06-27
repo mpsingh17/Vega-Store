@@ -9,6 +9,8 @@ namespace VegaStore.Core.Repositories
     public interface IVehicleRepository : IRepository<Vehicle>
     {
         Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(bool trackChanges);
+        
+        Task<Vehicle> GetSingleVehicleAsync(int id, bool includeRelated, bool trackChanges);
         Task<Vehicle> GetSingleVehicleAsync(int id, bool trackChanges);
     }
 }

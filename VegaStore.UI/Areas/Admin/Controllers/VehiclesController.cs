@@ -101,5 +101,17 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Detail(int id)
+        {
+            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
+            if(vehicleInDb is null)
+            {
+                return NotFound();
+            }
+
+            var vm = _mapper.Map<DetailVehicleViewModel>(vehicleInDb);
+
+            return View(vm);
+        }
     }
 }
