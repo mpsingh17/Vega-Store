@@ -17,6 +17,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
         public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(bool trackChanges)
         {
             return await GetAll(trackChanges)
+                .Include(v => v.Model)
                 .ToListAsync();
         }
 
