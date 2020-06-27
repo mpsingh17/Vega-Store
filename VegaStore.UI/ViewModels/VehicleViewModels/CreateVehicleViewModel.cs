@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,11 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         [Display(Name = "Model")]
         public int ModelId { get; set; }
         public IEnumerable<SelectListItem> ModelSLIs { get; set; } = new List<SelectListItem>();
+
+        [Required]
+        [Display(Name = "Features")]
+        public ICollection<int> FeatureIds { get; set; } = new Collection<int>();
+        public IEnumerable<SelectListItem> FeatureSLIs { get; set; }
 
         [Required]
         [StringLength(255)]

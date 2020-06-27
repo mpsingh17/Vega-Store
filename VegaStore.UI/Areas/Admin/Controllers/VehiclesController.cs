@@ -44,13 +44,16 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [ImportModelState]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var featuresInDb = await _repository.Features.GetAllFeaturesAsync(trackChanges: false);
             var vm = new CreateVehicleViewModel
             {
                 ModelSLIs = _repository.Models.Models.Select(
                     m => new SelectListItem { Text = m.Name, Value = m.Id.ToString() }
-                )
+                ),
+                FeatureSLIs = featuresInDb
+                    .Select(f => new SelectListItem { Text = f.Name, Value = f.Id.ToString() })
             };
 
             return View(vm);
@@ -71,11 +74,19 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Create));
             }
 
+            var featuresToAdd = await _repository.Features.GetAllFeaturesAsync(vm.FeatureIds, trackChanges: false);
+            if(featuresToAdd is null)
+            {
+                ModelState.AddModelError(nameof(vm.FeatureIds), "Invalid feature(s) selected.");
+                return RedirectToAction(nameof(Create));
+            }
+
             var vehicleToCreate = new Vehicle
             {
                 Name = vm.Name,
                 Price = Convert.ToDecimal(vm.Price),
                 ModelId = vm.ModelId,
+                VehicleFeatures = featuresToAdd.Select(f => new VehicleFeature { FeatureId = f.Id}).ToList(),
                 Color = vm.Color,
                 Condition = vm.Condition,
                 IsRegistered = vm.IsRegistered,
