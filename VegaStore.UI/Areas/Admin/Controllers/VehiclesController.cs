@@ -102,6 +102,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [ImportModelState]
         public async Task<IActionResult> Edit(int id)
         {
             var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
@@ -119,6 +120,44 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             vm.FeatureSLIs = featuresInDb.Select(f => new SelectListItem { Text = f.Name, Value = f.Id.ToString() });
 
             return View(vm);
+        }
+
+        [HttpPost]
+        [ExportModelState]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditVehicleViewModel vm, int id)
+        {
+            if(!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Edit), new { id });
+            }
+
+            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: true);
+            if (vehicleInDb is null)
+            {
+                return NotFound();
+            }
+
+            var modelInDb = await _repository.Models.GetSingleModelAsync(vm.ModelId, trackChanges: false);
+            if (modelInDb is null)
+            {
+                ModelState.AddModelError(nameof(vm.ModelId), "Invalid model selected.");
+                return RedirectToAction(nameof(Create));
+            }
+
+            var featuresToAdd = await _repository.Features.GetAllFeaturesAsync(vm.FeatureIds, trackChanges: false);
+            if (featuresToAdd is null)
+            {
+                ModelState.AddModelError(nameof(vm.FeatureIds), "Invalid feature(s) selected.");
+                return RedirectToAction(nameof(Create));
+            }
+
+            _mapper.Map(vm, vehicleInDb);
+            vehicleInDb.UpdatedAt = DateTime.Now;
+
+            await _repository.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Detail(int id)

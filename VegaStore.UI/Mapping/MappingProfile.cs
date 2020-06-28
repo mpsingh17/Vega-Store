@@ -26,6 +26,9 @@ namespace VegaStore.UI.Mapping
 
             CreateMap<CreateFeatureViewModel, Feature>();
             CreateMap<EditFeatureViewModel, Feature>();
+
+            CreateMap<EditVehicleViewModel, Vehicle>()
+                .ForMember(v => v.VehicleFeatures, opt => opt.MapFrom(vm => vm.FeatureIds.Select(fId => new VehicleFeature { FeatureId = fId })));
             #endregion
 
             #region Model to ViewModel
