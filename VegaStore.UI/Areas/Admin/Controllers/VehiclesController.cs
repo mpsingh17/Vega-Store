@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Extensions.Logging;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
@@ -101,6 +102,25 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
+            if (vehicleInDb is null)
+            {
+                return NotFound();
+            }
+
+            var vm = _mapper.Map<EditVehicleViewModel>(vehicleInDb);
+
+            vm.ModelSLIs = _repository.Models.Models
+                .Select(m => new SelectListItem { Text = m.Name, Value = m.Id.ToString() });
+
+            var featuresInDb = await _repository.Features.GetAllFeaturesAsync(trackChanges: false);
+            vm.FeatureSLIs = featuresInDb.Select(f => new SelectListItem { Text = f.Name, Value = f.Id.ToString() });
+
+            return View(vm);
+        }
+
         public async Task<IActionResult> Detail(int id)
         {
             var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
@@ -113,5 +133,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             return View(vm);
         }
+
+
     }
 }
