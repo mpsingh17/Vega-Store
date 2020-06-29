@@ -172,6 +172,24 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             return View(vm);
         }
+        
+        [HttpDelete]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: false, trackChanges: true);
+            if(vehicleInDb is null)
+            {
+                return NotFound();
+            }
+
+            _repository.Vehicles.Remove(vehicleInDb);
+            await _repository.SaveAsync();
+
+            return Ok("Vehicle has been deleted.");
+        }
+
+
 
 
     }

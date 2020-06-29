@@ -41,38 +41,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRegistered)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Color)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Detail", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsRegistered)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Condition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    <a asp-area="Admin" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-area="Admin" asp-action="Detail" asp-route-id="@item.Id">Details</a> |
+                    <a data-toggle="modal" data-target="#confirmDeleteModal"
+                       asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<partial name="_ConfirmDeleteModalPartial" />
+
+@section Scripts {
+    <script src="~/js/deleteResource.js"></script>
+}
