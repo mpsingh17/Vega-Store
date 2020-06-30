@@ -103,13 +103,10 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [ImportModelState]
+        [ServiceFilter(typeof(CheckVehicleExists))]
         public async Task<IActionResult> Edit(int id)
         {
-            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
-            if (vehicleInDb is null)
-            {
-                return NotFound();
-            }
+            Vehicle vehicleInDb = HttpContext.Items[nameof(vehicleInDb)] as Vehicle;
 
             var vm = _mapper.Map<EditVehicleViewModel>(vehicleInDb);
 
@@ -125,17 +122,12 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         [HttpPost]
         [ExportModelState]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(CheckVehicleExists))]
         public async Task<IActionResult> Edit(EditVehicleViewModel vm, int id)
         {
             if(!ModelState.IsValid)
             {
                 return RedirectToAction(nameof(Edit), new { id });
-            }
-
-            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: true);
-            if (vehicleInDb is null)
-            {
-                return NotFound();
             }
 
             var modelInDb = await _repository.Models.GetSingleModelAsync(vm.ModelId, trackChanges: false);
@@ -152,6 +144,8 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Create));
             }
 
+            Vehicle vehicleInDb = HttpContext.Items[nameof(vehicleInDb)] as Vehicle;
+
             _mapper.Map(vm, vehicleInDb);
             vehicleInDb.UpdatedAt = DateTime.Now;
 
@@ -160,13 +154,10 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Detail(int id)
+        [ServiceFilter(typeof(CheckVehicleExists))]
+        public IActionResult Detail(int id)
         {
-            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: true, trackChanges: false);
-            if(vehicleInDb is null)
-            {
-                return NotFound();
-            }
+            Vehicle vehicleInDb = HttpContext.Items[nameof(vehicleInDb)] as Vehicle;
 
             var vm = _mapper.Map<DetailVehicleViewModel>(vehicleInDb);
 
@@ -175,22 +166,16 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         
         [HttpDelete]
         [ValidateAntiForgeryToken]
+        [ServiceFilter(typeof(CheckVehicleExists))]
         public async Task<IActionResult> Delete(int id)
         {
-            var vehicleInDb = await _repository.Vehicles.GetSingleVehicleAsync(id, includeRelated: false, trackChanges: true);
-            if(vehicleInDb is null)
-            {
-                return NotFound();
-            }
+            Vehicle vehicleInDb = HttpContext.Items[nameof(vehicleInDb)] as Vehicle;
 
             _repository.Vehicles.Remove(vehicleInDb);
             await _repository.SaveAsync();
 
             return Ok("Vehicle has been deleted.");
         }
-
-
-
 
     }
 }
