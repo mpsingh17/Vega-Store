@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -39,6 +40,9 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         [Required]
         [Display(Name = "Condition")]
         public Condition Condition { get; set; }
+
+        [Required]
+        public List<IFormFile> Images { get; set; }
 
     }
 }
