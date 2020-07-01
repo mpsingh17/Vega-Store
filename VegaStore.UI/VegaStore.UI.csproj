@@ -12,6 +12,8 @@
     <Compile Remove="Migrations\20200622091846_AddVehicleModel.Designer.cs" />
     <Compile Remove="Migrations\20200622094048_AddVehicleFeatureModelAndRelationship.cs" />
     <Compile Remove="Migrations\20200622094048_AddVehicleFeatureModelAndRelationship.Designer.cs" />
+    <Compile Remove="Migrations\20200701100709_AddVehicleImageModelRulesAndRelations.cs" />
+    <Compile Remove="Migrations\20200701100709_AddVehicleImageModelRulesAndRelations.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

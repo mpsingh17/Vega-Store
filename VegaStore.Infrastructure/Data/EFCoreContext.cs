@@ -17,6 +17,7 @@ namespace VegaCore.Infrastructure.Data
         public DbSet<Model> Models { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleImage> VehicleImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,7 @@ namespace VegaCore.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new FeatureConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleFeatureConfiguration());
+            modelBuilder.ApplyConfiguration(new VehicleImageConfiguration());
         }
     }
 }

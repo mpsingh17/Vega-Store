@@ -33,5 +33,7 @@ namespace VegaStore.Core.Entities
 
         public ICollection<VehicleFeature> VehicleFeatures { get; set; } = new Collection<VehicleFeature>();
 
+        public ICollection<VehicleImage> VehicleImages { get; set; } = new Collection<VehicleImage>();
+
     }
 }

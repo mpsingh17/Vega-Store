@@ -16,15 +16,20 @@ namespace VegaStore.UI.Extensions
         {
             using (var scope = host.Services.CreateScope())
             {
-                scope.ServiceProvider
+                var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
+
+                if(env.IsProduction())
+                {
+                    scope.ServiceProvider
                     .GetRequiredService<EFCoreContext>()
                     .Database
                     .Migrate();
 
-                scope.ServiceProvider
-                    .GetRequiredService<ApplicationDbContext>()
-                    .Database
-                    .Migrate();
+                    scope.ServiceProvider
+                        .GetRequiredService<ApplicationDbContext>()
+                        .Database
+                        .Migrate();
+                }
             }
 
             return host;
