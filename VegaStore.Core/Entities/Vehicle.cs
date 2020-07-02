@@ -28,6 +28,8 @@ namespace VegaStore.Core.Entities
 
         public decimal Price { get; set; }
 
+        public string FeatureImage { get; set; }
+
         public int ModelId { get; set; }
         public Model Model { get; set; }
 

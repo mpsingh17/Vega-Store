@@ -37,6 +37,9 @@ namespace VegaStore.Infrastructure.Data.EntityConfigurations
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
+            builder.Property(v => v.FeatureImage)
+                .IsRequired()
+                .HasMaxLength(255);
             #endregion
 
             #region Relationship configuration
