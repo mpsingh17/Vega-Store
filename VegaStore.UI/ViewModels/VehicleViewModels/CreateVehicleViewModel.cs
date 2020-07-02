@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Entities;
+using VegaStore.UI.ValidationAttributes;
 
 namespace VegaStore.UI.ViewModels.VehicleViewModels
 {
@@ -42,6 +43,8 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public Condition Condition { get; set; }
 
         [Required]
+        [MaxFileSize(1 * 1024 * 1024)]
+        [AllowedFileExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile FeaturedImage { get; set; }
 
         //[Required]
