@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20200622094048_AddVehicleFeatureModelAndRelationship.Designer.cs" />
     <Compile Remove="Migrations\20200701100709_AddVehicleImageModelRulesAndRelations.cs" />
     <Compile Remove="Migrations\20200701100709_AddVehicleImageModelRulesAndRelations.Designer.cs" />
+    <Compile Remove="Migrations\20200702004627_AddFeaturedImageColumnToVehicleModel.cs" />
+    <Compile Remove="Migrations\20200702004627_AddFeaturedImageColumnToVehicleModel.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VegaStore.Infrastructure\VegaStore.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

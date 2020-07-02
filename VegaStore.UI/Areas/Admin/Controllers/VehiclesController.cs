@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
@@ -18,17 +21,20 @@ namespace VegaStore.UI.Areas.Admin.Controllers
     [Area("Admin")]
     public class VehiclesController : Controller
     {
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<VehiclesController> _logger;
         private readonly IRepositoryManager _repository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public VehiclesController(
+            IWebHostEnvironment webHostEnvironment,
             ILogger<VehiclesController> logger,
             IRepositoryManager repository,
             IUserService userService,
             IMapper mapper)
         {
+            _webHostEnvironment = webHostEnvironment;
             _userService = userService;
             _repository = repository;
             _mapper = mapper;
@@ -95,6 +101,25 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
+
+            var today = DateTime.Now;
+
+            var uploadsFolderLocation = today.Year.ToString() + "/" + today.Month.ToString() + "/" + today.Day.ToString();
+            uploadsFolderLocation = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", uploadsFolderLocation);
+
+            if (!Directory.Exists(uploadsFolderLocation))
+                Directory.CreateDirectory(uploadsFolderLocation);
+
+            var uniqueImageName = Guid.NewGuid().ToString() + "_" + DateTime.Now.Ticks.ToString() + Path.GetExtension(vm.FeaturedImage.FileName);
+
+            var imagePath = Path.Combine(uploadsFolderLocation, uniqueImageName);
+
+            using (FileStream fs = new FileStream(imagePath, FileMode.Create))
+            {
+                await vm.FeaturedImage.CopyToAsync(fs);
+            }
+
+            vehicleToCreate.FeatureImage = uniqueImageName;
 
             await _repository.Vehicles.AddAsync(vehicleToCreate);
             await _repository.SaveAsync();

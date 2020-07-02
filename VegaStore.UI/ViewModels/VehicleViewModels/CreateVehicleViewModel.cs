@@ -42,6 +42,9 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public Condition Condition { get; set; }
 
         [Required]
+        public IFormFile FeaturedImage { get; set; }
+
+        //[Required]
         public List<IFormFile> Images { get; set; }
 
     }
