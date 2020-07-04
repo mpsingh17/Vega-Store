@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
+using VegaStore.Core.RequestFeatures;
 using VegaStore.Core.Services;
 using VegaStore.UI.ActionFilters;
 using VegaStore.UI.ViewModels.VehicleViewModels;
@@ -42,13 +44,33 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(trackChanges: false);
+            //var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(trackChanges: false);
+
+            //var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] VehicleParameters vehicleParameters)
+        {
+            _logger.LogInformation($"Search term {JsonConvert.SerializeObject(vehicleParameters.Search)}");
+
+            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
 
             var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
 
-            return View(result);
+            var recordsTotal = await _repository.Vehicles.GetVehiclesCount();
+
+            return Ok(new
+            {
+                vehicleParameters.Draw,
+                recordsTotal,
+                recordsFiltered = recordsTotal,
+                data = result
+            });
         }
 
         [ImportModelState]
@@ -175,6 +197,8 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             Vehicle vehicleInDb = HttpContext.Items[nameof(vehicleInDb)] as Vehicle;
 
             var vm = _mapper.Map<DetailVehicleViewModel>(vehicleInDb);
+
+            vm.FeaturedImagePath = Path.Join("uploads", vm.FeaturedImagePath);
 
             return View(vm);
         }

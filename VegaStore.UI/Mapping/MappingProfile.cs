@@ -58,6 +58,7 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Features, opt => opt.MapFrom(v => v.VehicleFeatures.Select(vf => vf.Feature.Name)))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
+                .ForMember(vm => vm.FeaturedImagePath, opt => opt.MapFrom(v => v.FeatureImage))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()))
                 .ForMember(vm => vm.UpdatedAt, opt => opt.MapFrom(v => v.UpdatedAt.ToLongDateString()));
             #endregion

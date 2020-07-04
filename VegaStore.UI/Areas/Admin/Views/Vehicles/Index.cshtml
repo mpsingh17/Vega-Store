@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["GetVehiclesURL"] = Url.Action("Post", "Vehicles", new { Area = "Admin" });
+    ViewData["EditVehicleURL"] = Url.Action("Edit", "Vehicles", new { Area = "Admin" });
+    ViewData["DetailVehicleURL"] = Url.Action("Detail", "Vehicles", new { Area = "Admin" });
+    ViewData["DeleteVehicleURL"] = Url.Action("Delete", "Vehicles", new { Area = "Admin" });
 }
 
 <h1>Index</h1>
@@ -10,7 +14,7 @@
     <a asp-area="Admin" asp-action="Create">Create New</a>
 </p>
 
-<table class="table">
+<table class="table" id="vehicles">
     <thead>
         <tr>
             <th>
@@ -37,11 +41,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @*@foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -75,7 +79,7 @@
                        asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
-        }
+        }*@
     </tbody>
 </table>
 
@@ -83,4 +87,66 @@
 
 @section Scripts {
     <script src="~/js/deleteResource.js"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+            $("#vehicles").DataTable({
+                "processing": true,
+                "serverSide": true,
+                //"pageLength": 2,
+                language: {
+                    searchPlaceholder: "Search by name"
+                },
+                ajax: {
+                    url: "@ViewData["GetVehiclesURL"]",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: function (d) {
+                        return JSON.stringify(d);
+                    }
+                },
+                "columns": [
+                    { data: "id" },
+                    {
+                        data: "name",
+                    },
+                    {
+                        data: "isRegistered",
+                        searchable: false
+                    },
+                    {
+                        data: "color",
+                        searchable: false
+                    },
+                    {
+                        data: "condition",
+                        searchable: false
+                    },
+                    {
+                        data: "price",
+                        searchable: false
+                    },
+                    {
+                        data: "model",
+                        searchable: false
+                    },
+                    {
+                        data: "createdAt",
+                        searchable: false
+                    },
+                    {
+                        data: "id",
+                        orderable: false,
+                        searchable: false,
+                        render: function (data) {
+                            return `<a class="btn btn-link" href="@ViewData["EditVehicleURL"]/${data}">Edit</a> |
+                                <a class="btn btn-link" href="@ViewData["DetailVehicleURL"]/${data}">Details</a> |
+                                <a data-toggle="modal" data-target="#confirmDeleteModal" href="@ViewData["DeleteVehicleURL"]/${data}">Delete</a>`;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
 }

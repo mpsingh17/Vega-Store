@@ -16,6 +16,7 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public string Model { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
+        public string FeaturedImagePath { get; set; }
         public IEnumerable<string> Features { get; set; }
 
     }
