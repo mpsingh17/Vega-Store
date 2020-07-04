@@ -51,7 +51,8 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
 
             CreateMap<Vehicle, EditVehicleViewModel>()
-                .ForMember(vm => vm.FeatureIds, opt => opt.MapFrom(v => v.VehicleFeatures.Select(vf => vf.FeatureId)));
+                .ForMember(vm => vm.FeatureIds, opt => opt.MapFrom(v => v.VehicleFeatures.Select(vf => vf.FeatureId)))
+                .ForMember(vm => vm.CurrentFeaturedImagePath, opt => opt.MapFrom(v => v.FeatureImage));
 
             CreateMap<Vehicle, DetailVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))

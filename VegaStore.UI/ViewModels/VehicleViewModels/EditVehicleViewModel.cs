@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Entities;
+using VegaStore.UI.ValidationAttributes;
 
 namespace VegaStore.UI.ViewModels.VehicleViewModels
 {
@@ -39,5 +41,12 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         [Required]
         [Display(Name = "Condition")]
         public Condition Condition { get; set; }
+
+
+        public string CurrentFeaturedImagePath { get; set; }
+        
+        [MaxFileSize(1 * 1024 * 1024)]
+        [AllowedFileExtensions(new string[] { ".jpg", ".png" })]
+        public IFormFile FeaturedImage { get; set; }
     }
 }

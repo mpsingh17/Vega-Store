@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Differencing;
@@ -102,24 +103,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 UpdatedAt = DateTime.Now
             };
 
-            var today = DateTime.Now;
-
-            var uploadsFolderLocation = today.Year.ToString() + "/" + today.Month.ToString() + "/" + today.Day.ToString();
-            uploadsFolderLocation = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", uploadsFolderLocation);
-
-            if (!Directory.Exists(uploadsFolderLocation))
-                Directory.CreateDirectory(uploadsFolderLocation);
-
-            var uniqueImageName = Guid.NewGuid().ToString() + "_" + DateTime.Now.Ticks.ToString() + Path.GetExtension(vm.FeaturedImage.FileName);
-
-            var imagePath = Path.Combine(uploadsFolderLocation, uniqueImageName);
-
-            using (FileStream fs = new FileStream(imagePath, FileMode.Create))
-            {
-                await vm.FeaturedImage.CopyToAsync(fs);
-            }
-
-            vehicleToCreate.FeatureImage = uniqueImageName;
+            vehicleToCreate.FeatureImage = await UploadImage(vm.FeaturedImage);
 
             await _repository.Vehicles.AddAsync(vehicleToCreate);
             await _repository.SaveAsync();
@@ -140,6 +124,9 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             var featuresInDb = await _repository.Features.GetAllFeaturesAsync(trackChanges: false);
             vm.FeatureSLIs = featuresInDb.Select(f => new SelectListItem { Text = f.Name, Value = f.Id.ToString() });
+            
+            vm.CurrentFeaturedImagePath = Path.Join("uploads", vm.CurrentFeaturedImagePath);
+            _logger.LogInformation($"CurrentFeaturedImage path is -> {vm.CurrentFeaturedImagePath}");
 
             return View(vm);
         }
@@ -174,6 +161,9 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             _mapper.Map(vm, vehicleInDb);
             vehicleInDb.UpdatedAt = DateTime.Now;
 
+            if (vm.FeaturedImage != null)
+                vehicleInDb.FeatureImage = await UploadImage(vm.FeaturedImage);
+
             await _repository.SaveAsync();
 
             return RedirectToAction(nameof(Index));
@@ -202,5 +192,27 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return Ok("Vehicle has been deleted.");
         }
 
+
+        private async Task<string> UploadImage(IFormFile formFile)
+        {
+            var today = DateTime.Now;
+            var dateSpecificDir = today.Year.ToString() + "\\" + today.Month.ToString() + "\\" + today.Day.ToString();
+
+            var uploadsLocation = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", dateSpecificDir);
+
+            if (!Directory.Exists(uploadsLocation))
+                Directory.CreateDirectory(uploadsLocation);
+
+            var uniqueImageName = Guid.NewGuid().ToString() + "_" + DateTime.Now.Ticks.ToString() + Path.GetExtension(formFile.FileName);
+
+            var imagePath = Path.Combine(uploadsLocation, uniqueImageName);
+
+            using (FileStream fs = new FileStream(imagePath, FileMode.Create))
+            {
+                await formFile.CopyToAsync(fs);
+            }
+
+            return Path.Join(dateSpecificDir, uniqueImageName);
+        }
     }
 }
