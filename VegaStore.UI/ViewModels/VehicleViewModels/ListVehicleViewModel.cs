@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using VegaStore.Core.Entities;
 
 namespace VegaStore.UI.ViewModels.VehicleViewModels
 {
@@ -16,6 +17,9 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public string IsRegistered { get; set; }
 
         public string Color { get; set; }
+
+        // For filter purpose.
+        public Colors Colors { get; set; }
 
         public string Condition { get; set; }
 
