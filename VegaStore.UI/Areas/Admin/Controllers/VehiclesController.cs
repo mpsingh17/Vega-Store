@@ -56,13 +56,19 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] VehicleParameters vehicleParameters)
         {
-            _logger.LogInformation($"Search term {JsonConvert.SerializeObject(vehicleParameters.Search)}");
+            _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParameters)}");
+
+            if (vehicleParameters is null)
+            {
+                return BadRequest("Invalid parameters sent.");
+            }
 
             var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var recordsTotal = vehiclesInDb.Count();
 
-            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
+            var paginatedVehicles = PaginateVehicles(vehiclesInDb, vehicleParameters.Start, vehicleParameters.Length);
 
-            var recordsTotal = await _repository.Vehicles.GetVehiclesCount();
+            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(paginatedVehicles);
 
             return Ok(new
             {
@@ -237,6 +243,13 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             }
 
             return Path.Join(dateSpecificDir, uniqueImageName);
+        }
+
+        private IEnumerable<Vehicle> PaginateVehicles(IEnumerable<Vehicle> vehicles, int skip, int take)
+        {
+            return vehicles.Skip(skip)
+                .Take(take)
+                .OrderByDescending(v => v.CreatedAt);
         }
     }
 }

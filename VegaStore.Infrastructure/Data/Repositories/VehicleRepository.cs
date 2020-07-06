@@ -18,17 +18,19 @@ namespace VegaStore.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
         {
-            var query =  GetAll(trackChanges)
-                .Include(v => v.Model)
-                .Skip(vehicleParameters.Start)
-                .Take(vehicleParameters.Length);
+            var query = GetAll(trackChanges);
 
             var searchTerm = vehicleParameters.Search.Value;
             if (searchTerm != null)
                 query = query.Where(v => v.Name.Contains(searchTerm.Trim().ToLower()));
 
-            return await query.OrderByDescending(v => v.CreatedAt)
-                .ToListAsync();
+            var color = vehicleParameters.Color;
+            if (color > 0)
+                query = query.Where(v => v.Color.Equals(color));
+
+            query = query.Include(v => v.Model);
+
+            return await query.ToListAsync();
         }
 
         public async Task<int> GetVehiclesCount() => await GetAll(trackChanges: false).CountAsync();
