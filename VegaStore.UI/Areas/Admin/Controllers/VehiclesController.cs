@@ -54,7 +54,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] VehicleParameters vehicleParameters)
+        public IActionResult Post([FromBody] VehicleParameters vehicleParameters)
         {
             _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParameters)}");
 
@@ -63,12 +63,10 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 return BadRequest("Invalid parameters sent.");
             }
 
-            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
-            var recordsTotal = vehiclesInDb.Count();
+            var vehiclesInDb = _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var recordsTotal = vehiclesInDb.ItemsCount;
 
-            var paginatedVehicles = PaginateVehicles(vehiclesInDb, vehicleParameters.Start, vehicleParameters.Length);
-
-            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(paginatedVehicles);
+            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
 
             return Ok(new
             {

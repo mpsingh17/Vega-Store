@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.Entities;
+using VegaStore.Core.RequestFeatures;
 using VegaStore.UI.ViewModels.FeatureViewModels;
 using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ViewModels.ModelViewModels;
