@@ -40,7 +40,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             var featuresInDb = await _repository.Features.GetAllFeaturesAsync(trackChanges: false);
 
             var result = _mapper.Map<IEnumerable<ListFeatureViewModel>>(featuresInDb);
-            
+
             return View(result);
         }
 
