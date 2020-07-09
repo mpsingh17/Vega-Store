@@ -14,24 +14,7 @@
     <a asp-area="Admin" asp-action="Create">Create New</a>
 </p>
 
-<div class="row mb-3">
-    <div class="col-4">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Filter</h2>
-            </div>
-
-            <div class="card-body">
-                <div class="form-group">
-                    <label for="@Html.DisplayNameFor(model => model.Colors)" class="control-label"></label>
-                    <select id="color" name="@Html.DisplayNameFor(model => model.Colors)" asp-items="Html.GetEnumSelectList<Colors>()" class="form-control">
-                        <option selected="selected" value="">Select Color</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<partial name="_FilterForm.cshtml" />
 
 <div class="row">
     <div class="col">

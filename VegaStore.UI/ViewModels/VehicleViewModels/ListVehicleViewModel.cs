@@ -18,9 +18,6 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
 
         public string Color { get; set; }
 
-        // For filter purpose.
-        public Colors Colors { get; set; }
-
         public string Condition { get; set; }
 
         public string Price { get; set; }

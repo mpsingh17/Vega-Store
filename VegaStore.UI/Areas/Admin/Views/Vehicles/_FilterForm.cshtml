@@ -1,0 +1,61 @@
+﻿@model FilterVehicleListViewModel
+
+<div class="row mb-3">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Filter Vehicles</h2>
+            </div>
+
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Color" class="control-label"></label>
+                                <select asp-for="Color" asp-items="Html.GetEnumSelectList<Colors>()" class="form-control">
+                                    <option selected="selected" value="">Select Color</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="Condition" class="control-label"></label>
+                                <select asp-for="Condition" asp-items="Html.GetEnumSelectList<Condition>()" class="form-control">
+                                    <option selected="selected" value="">Select Condition</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MinPrice" class="control-label"></label>
+                                <input asp-for="MinPrice" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label asp-for="MaxPrice" class="control-label"></label>
+                                <input asp-for="MaxPrice" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="IsRegistered" /> @Html.DisplayNameFor(model => model.IsRegistered)
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary" id="filterBtn">Filter</button>
+            </div>
+        </div>
+    </div>
+</div>
