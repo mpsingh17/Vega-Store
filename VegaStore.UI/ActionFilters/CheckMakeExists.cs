@@ -48,6 +48,10 @@ namespace VegaStore.UI.ActionFilters
                     }
                     context.Result = new NotFoundResult();
                 }
+                else
+                {
+                    context.Result = new NotFoundResult();
+                }
 
                 context.HttpContext.Items.Add(nameof(makeInDb), makeInDb);
             }

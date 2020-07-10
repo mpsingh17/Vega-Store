@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,34 +26,35 @@ namespace VegaStore.UI.ActionFilters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var vehicleId = context.ActionArguments
-                .SingleOrDefault(x => x.Key.Contains("id")).Value as int?;
-
-            var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
-
-            if (vehicleId is null)
+            if (context.ActionArguments.TryGetValue("id", out object value) && value is int vehicleId)
             {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Vehicle ID = {VehicleId} sent by client.", vehicleId);
-                context.Result = new ViewResult
+                var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
+
+                var vehicleInDb = _repository.Vehicles
+                    .GetSingleVehicleAsync(vehicleId, includeRelated: true, trackChanges).Result;
+
+                _logger.LogInformation($"vehicle ID is: {vehicleId}");
+
+                if (vehicleInDb is null)
                 {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
+                    _logger.LogWarning(LogEventId.Warning, "Invalid Vehicle ID = {VehicleId} sent by client.", vehicleId);
+                    
+                    // if AJAX request
+                    if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    {
+                        var statusCodePagesFeature = context.HttpContext.Features.Get<IStatusCodePagesFeature>();
+                        if (statusCodePagesFeature != null)
+                            statusCodePagesFeature.Enabled = false;
+                    }
+                    context.Result = new NotFoundResult();
+                }
+
+                context.HttpContext.Items.Add(nameof(vehicleInDb), vehicleInDb);
             }
-
-            var vehicleInDb = _repository.Vehicles.GetSingleVehicleAsync((int)vehicleId, includeRelated: true, trackChanges).Result;
-
-            if (vehicleInDb is null)
+            else
             {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Vehicle ID = {VehicleId} sent by client.", vehicleId);
-                context.Result = new ViewResult
-                {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
+                context.Result = new NotFoundResult();
             }
-
-            context.HttpContext.Items.Add(nameof(vehicleInDb), vehicleInDb);
 
             base.OnActionExecuting(context);
         }

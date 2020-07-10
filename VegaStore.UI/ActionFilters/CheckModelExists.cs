@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,34 +27,32 @@ namespace VegaStore.UI.ActionFilters
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var modelId = context.ActionArguments
-                .SingleOrDefault(x => x.Key.ToString().Contains("id")).Value as int?;
-
-            var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
-
-            if (modelId is null)
+            if (context.ActionArguments.TryGetValue("id", out object value) && value is int modelId)
             {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {ModelId} sent by client.", modelId);
-                context.Result = new ViewResult
-                {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
-            }
+                var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
 
-            var modelInDb = _repository.Models.GetSingleModelAsync((int)modelId, trackChanges).Result;
+                var modelInDb = _repository.Models.GetSingleModelAsync(modelId, trackChanges).Result;
 
-            if (modelInDb is null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {ModelId} sent by client.", modelId);
-                context.Result = new ViewResult
+                if (modelInDb is null)
                 {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
+                    _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {ModelId} sent by client.", modelId);
+                    
+                    // if AJAX request
+                    if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    {
+                        var statusCodePagesFeature = context.HttpContext.Features.Get<IStatusCodePagesFeature>();
+                        if (statusCodePagesFeature != null)
+                            statusCodePagesFeature.Enabled = false;
+                    }
+                    context.Result = new NotFoundResult();
+                }
+                else
+                {
+                    context.Result = new NotFoundResult();
+                }
+
+                context.HttpContext.Items.Add(nameof(modelInDb), modelInDb);
             }
-            
-            context.HttpContext.Items.Add(nameof(modelInDb), modelInDb);
 
             base.OnActionExecuting(context);
         }
