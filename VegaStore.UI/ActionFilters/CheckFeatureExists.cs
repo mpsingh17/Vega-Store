@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
@@ -35,11 +36,15 @@ namespace VegaStore.UI.ActionFilters
                 if (featureInDb is null)
                 {
                     _logger.LogWarning(LogEventId.Warning, "Invalid Feature ID = {FeatureId} sent by client.", featureId);
-                    context.Result = new ViewResult
+
+                    // if AJAX request
+                    if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
                     {
-                        StatusCode = 404,
-                        ViewName = "NotFound"
-                    };
+                        var statusCodePagesFeature = context.HttpContext.Features.Get<IStatusCodePagesFeature>();
+                        if (statusCodePagesFeature != null)
+                            statusCodePagesFeature.Enabled = false;
+                    }
+                    context.Result = new NotFoundResult();
                 }
 
                 context.HttpContext.Items.Add(nameof(featureInDb), featureInDb);

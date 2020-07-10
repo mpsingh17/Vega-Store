@@ -69,6 +69,7 @@ namespace VegaStore.UI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
             else
             {
