@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,44 +29,29 @@ namespace VegaStore.UI.ActionFilters
         
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var makeId = context.ActionArguments
-                .SingleOrDefault(x => x.Key.ToString().Contains("id")).Value as int?;
-
-            if (makeId is null)
+            if (context.ActionArguments.TryGetValue("id", out object value) && value is int makeId)
             {
-                if (context.ActionArguments.TryGetValue("vm", out object value)
-                    && value is SaveModelViewModel vm)
+                var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
+
+                var makeInDb = _repository.Makes.GetSingleMakeAsync(makeId, trackChanges).Result;
+
+                if (makeInDb is null)
                 {
-                    makeId = vm.MakeId;
+                    _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", makeId);
+                    
+                    // if AJAX request
+                    if (context.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                    {
+                        var statusCodePagesFeature = context.HttpContext.Features.Get<IStatusCodePagesFeature>();
+                        if (statusCodePagesFeature != null)
+                            statusCodePagesFeature.Enabled = false;
+                    }
+                    context.Result = new NotFoundResult();
                 }
+
+                context.HttpContext.Items.Add(nameof(makeInDb), makeInDb);
             }
-
-            var trackChanges = context.HttpContext.Request.Method.Contains("POST") == true;
-
-            if(makeId is null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", makeId);
-                context.Result = new ViewResult
-                {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
-            }
-
-            var makeInDb = _repository.Makes.GetSingleMakeAsync((int)makeId, trackChanges).Result;
-
-            if(makeInDb is null)
-            {
-                _logger.LogWarning(LogEventId.Warning, "Invalid Make ID = {MakeId} sent by client.", makeId);
-                context.Result = new ViewResult
-                {
-                    StatusCode = 404,
-                    ViewName = "NotFound"
-                };
-            }
-
-            context.HttpContext.Items.Add(nameof(makeInDb), makeInDb);
-
+            
             base.OnActionExecuting(context);
         }
     }
