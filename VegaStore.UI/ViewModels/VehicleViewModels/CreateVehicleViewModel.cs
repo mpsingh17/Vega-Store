@@ -32,7 +32,8 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public bool IsRegistered { get; set; }
 
         [Required]
-        public string Price { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Price { get; set; }
 
         [Required]
         [Display(Name = "Color")]
