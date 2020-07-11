@@ -57,6 +57,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             if (vehicleParameters is null)
             {
                 return BadRequest("Invalid vehicle filter parameters sent.");
+                //return BadRequest(ModelState);
             }
 
             var vehiclesInDb = _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
@@ -114,7 +115,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             var vehicleToCreate = new Vehicle
             {
                 Name = vm.Name,
-                Price = Convert.ToDecimal(vm.Price),
+                Price = vm.Price,
                 ModelId = vm.ModelId,
                 VehicleFeatures = featuresToAdd.Select(f => new VehicleFeature { FeatureId = f.Id}).ToList(),
                 Color = vm.Color,
