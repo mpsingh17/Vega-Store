@@ -13,10 +13,10 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
         public string Condition { get; set; }
 
         [Display(Name = "Min Price")]
-        public int MinPrice { get; set; }
+        public string MinPrice { get; set; }
         
         [Display(Name = "Max Price")]
-        public int MaxPrice { get; set; }
+        public string MaxPrice { get; set; }
 
         [Display(Name = "Is Registered?")]
         public bool IsRegistered { get; set; }

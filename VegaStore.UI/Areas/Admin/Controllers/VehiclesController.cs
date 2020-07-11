@@ -46,10 +46,6 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            //var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(trackChanges: false);
-
-            //var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
-
             return View();
         }
 

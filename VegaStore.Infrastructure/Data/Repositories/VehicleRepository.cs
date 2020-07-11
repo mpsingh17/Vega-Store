@@ -25,9 +25,31 @@ namespace VegaStore.Infrastructure.Data.Repositories
             if (searchTerm != null)
                 query = query.Where(v => v.Name.Contains(searchTerm.Trim().ToLower()));
 
-            var color = vehicleParameters.Color;
-            if (color > 0)
-                query = query.Where(v => v.Color.Equals(color));
+            if (Enum.TryParse(vehicleParameters.Color, out Colors color))
+            {
+                var totalEnumItems = Enum.GetNames(typeof(Colors)).Length;
+
+                if (color > 0 && (int)color <= totalEnumItems)
+                    query = query.Where(v => v.Color.Equals(color));
+            }
+            
+            if (Enum.TryParse(vehicleParameters.Condition, out Condition condition))
+            {
+                var totalEnumItems = Enum.GetNames(typeof(Condition)).Length;
+
+                if (condition > 0 && (int)condition <= totalEnumItems)
+                    query = query.Where(v => v.Condition.Equals(condition));
+            }
+
+            if (!string.IsNullOrEmpty(vehicleParameters.MinPrice?.Trim())
+                && !string.IsNullOrEmpty(vehicleParameters.MaxPrice?.Trim()))
+            {
+                var minPrice = Convert.ToDecimal(vehicleParameters.MinPrice.Trim());
+                var maxPrice = Convert.ToDecimal(vehicleParameters.MaxPrice.Trim());
+
+                if (minPrice < maxPrice)
+                    query = query.Where(v => v.Price >= minPrice && v.Price <= maxPrice);
+            }
 
             query = query.Include(v => v.Model);
 

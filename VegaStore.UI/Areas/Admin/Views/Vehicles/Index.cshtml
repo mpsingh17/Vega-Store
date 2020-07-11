@@ -16,42 +16,46 @@
 
 <partial name="_FilterForm.cshtml" />
 
-<div class="row">
+
+<div class="row mt-4">
     <div class="col">
-        <table class="table" id="vehicles">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsRegistered)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Color)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Condition)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Model)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreatedAt)
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="card-body">
+                <table class="table" id="vehicles">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsRegistered)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Color)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Condition)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Model)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CreatedAt)
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -75,12 +79,15 @@
                     type: "POST",
                     contentType: "application/json",
                     data: function (d) {
+
                         // Collect custom filter values.
-                        const colorFilter = $("#color").val();
-                        if (colorFilter !== '' && colorFilter !== undefined) {
-                            console.log(colorFilter);
-                            d.color = parseInt(colorFilter);
-                        }
+                        const filterFormObjArr = $("#filterForm").serializeArray();
+                        filterFormObjArr.forEach(function (fieldObj) {
+                            if (fieldObj["value"] !== "" && fieldObj["value"] !== undefined) {
+                                d[fieldObj["name"]] = fieldObj["value"];
+                            }
+                        });
+
                         console.log(d);
                         return JSON.stringify(d);
                     }
@@ -127,10 +134,16 @@
                 ]
             });
 
-            $("#color").on("change", function (e) {
-                //const $colorsFilter = $(this);
-                //console.log($colorsFilter.val());
+            // trigger filter action
+            $("#filterBtn").on("click", function (e) {
+                e.preventDefault();
                 $vehicleTable.draw();
+            });
+
+            // trigger clear filters action
+            $("#clearFilters").on("click", function (e) {
+                //window.location.reload();
+                $("#filterForm").find("input[type=text], select").val("");
             });
         });
     </script>
