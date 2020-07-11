@@ -41,14 +41,12 @@ namespace VegaStore.Infrastructure.Data.Repositories
                     query = query.Where(v => v.Condition.Equals(condition));
             }
 
-            if (!string.IsNullOrEmpty(vehicleParameters.MinPrice?.Trim())
-                && !string.IsNullOrEmpty(vehicleParameters.MaxPrice?.Trim()))
+            if (vehicleParameters.MinPrice != null && vehicleParameters.MaxPrice != null)
             {
-                var minPrice = Convert.ToDecimal(vehicleParameters.MinPrice.Trim());
-                var maxPrice = Convert.ToDecimal(vehicleParameters.MaxPrice.Trim());
-
-                if (minPrice < maxPrice)
-                    query = query.Where(v => v.Price >= minPrice && v.Price <= maxPrice);
+                if (vehicleParameters.MinPrice > 0 && vehicleParameters.MinPrice < vehicleParameters.MaxPrice)
+                {
+                    query = query.Where(v => v.Price >= vehicleParameters.MinPrice && v.Price <= vehicleParameters.MaxPrice);
+                }
             }
 
             query = query.Include(v => v.Model);

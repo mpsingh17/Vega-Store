@@ -84,6 +84,8 @@
                         const filterFormObjArr = $("#filterForm").serializeArray();
                         filterFormObjArr.forEach(function (fieldObj) {
                             if (fieldObj["value"] !== "" && fieldObj["value"] !== undefined) {
+                                if (fieldObj["name"] === "MinPrice" || fieldObj["name"] === "MaxPrice")
+                                    fieldObj["value"] = parseFloat(fieldObj["value"]);
                                 d[fieldObj["name"]] = fieldObj["value"];
                             }
                         });

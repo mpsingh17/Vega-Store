@@ -11,7 +11,7 @@ namespace VegaStore.Core.RequestFeatures
         public string Color { get; set; }
         public string Condition { get; set; }
 
-        public string MinPrice { get; set; }
-        public string MaxPrice { get; set; }
+        public decimal? MinPrice { get; set; }
+        public decimal? MaxPrice { get; set; }
     }
 }

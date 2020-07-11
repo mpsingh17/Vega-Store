@@ -56,7 +56,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             if (vehicleParameters is null)
             {
-                return BadRequest("Invalid parameters sent.");
+                return BadRequest("Invalid vehicle filter parameters sent.");
             }
 
             var vehiclesInDb = _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
