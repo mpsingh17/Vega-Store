@@ -19,11 +19,13 @@ namespace VegaStore.UI.ValidationAttributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
-            var ext = Path.GetExtension(file.FileName).Trim().ToLower();
+            if (value is IFormFile file)
+            {
+                var ext = Path.GetExtension(file.FileName).Trim().ToLower();
+                if (!_extensions.Contains(ext))
+                    return new ValidationResult("Invalid file extension.");
+            }
 
-            if (!_extensions.Contains(ext))
-                return new ValidationResult("Invalid file extension.");
 
             return ValidationResult.Success;
         }

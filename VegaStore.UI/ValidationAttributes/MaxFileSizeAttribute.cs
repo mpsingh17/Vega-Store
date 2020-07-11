@@ -18,10 +18,11 @@ namespace VegaStore.UI.ValidationAttributes
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
-
-            if (file.Length > _maxFileSize)
-                return new ValidationResult("Uploaded file is greater than maximum allowed size.");
+            if (value is IFormFile file)
+                if (file.Length > _maxFileSize)
+                {
+                    return new ValidationResult("Uploaded file is greater than maximum allowed size.");
+                }
 
             return ValidationResult.Success;
         }
