@@ -136,7 +136,6 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 Extension = fileExt,
                 CreatedAt = DateTime.Now
             };
-
             await _repository.FilesOnFileSystem.AddAsync(fileOnFileSystem);
 
             await _repository.Vehicles.AddAsync(vehicleToCreate);
@@ -196,7 +195,18 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             vehicleInDb.UpdatedAt = DateTime.Now;
 
             if (vm.FeaturedImage != null)
+            {
                 vehicleInDb.FeatureImage = await UploadImage(vm.FeaturedImage);
+
+                var fileExt = Path.GetExtension(vehicleInDb.FeatureImage);
+                var fileOnFileSystem = new FileOnFileSystem
+                {
+                    Path = vehicleInDb.FeatureImage,
+                    Extension = fileExt,
+                    CreatedAt = DateTime.Now
+                };
+                await _repository.FilesOnFileSystem.AddAsync(fileOnFileSystem);
+            }
 
             await _repository.SaveAsync();
 
