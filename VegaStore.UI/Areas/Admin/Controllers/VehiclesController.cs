@@ -128,6 +128,17 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             vehicleToCreate.FeatureImage = await UploadImage(vm.FeaturedImage);
 
+            var fileExt = Path.GetExtension(vehicleToCreate.FeatureImage);
+            
+            var fileOnFileSystem = new FileOnFileSystem
+            {
+                Path = vehicleToCreate.FeatureImage,
+                Extension = fileExt,
+                CreatedAt = DateTime.Now
+            };
+
+            await _repository.FilesOnFileSystem.AddAsync(fileOnFileSystem);
+
             await _repository.Vehicles.AddAsync(vehicleToCreate);
             await _repository.SaveAsync();
 

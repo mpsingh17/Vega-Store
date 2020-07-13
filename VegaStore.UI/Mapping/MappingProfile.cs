@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using VegaStore.Core.Entities;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.UI.ViewModels.FeatureViewModels;
+using VegaStore.UI.ViewModels.FileOnFileSystemViewModels;
 using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ViewModels.ModelViewModels;
 using VegaStore.UI.ViewModels.UserViewModels;
@@ -62,6 +63,10 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.FeaturedImagePath, opt => opt.MapFrom(v => v.FeatureImage))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()))
                 .ForMember(vm => vm.UpdatedAt, opt => opt.MapFrom(v => v.UpdatedAt.ToLongDateString()));
+
+            CreateMap<FileOnFileSystem, ListFileOnFileSystemViewModel>()
+                .ForMember(vm => vm.Path, opt => opt.MapFrom(file => "uploads\\" + file.Path))
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(file => file.CreatedAt.ToLongDateString()));
             #endregion
         }
     }

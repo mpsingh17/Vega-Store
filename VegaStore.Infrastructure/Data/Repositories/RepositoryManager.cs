@@ -16,6 +16,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
         private ModelRepository _modelRepository;
         private FeatureRepository _featureRepository;
         private VehicleRepository _vehicleRepository;
+        private IFileOnFileSystemRepository _fileOnFileSystemRepository;
 
         public RepositoryManager(EFCoreContext context)
         {
@@ -29,6 +30,8 @@ namespace VegaStore.Infrastructure.Data.Repositories
         public IFeatureRepository Features => _featureRepository ?? (_featureRepository = new FeatureRepository(_context));
         
         public IVehicleRepository Vehicles => _vehicleRepository ?? (_vehicleRepository = new VehicleRepository(_context));
+
+        public IFileOnFileSystemRepository FilesOnFileSystem => _fileOnFileSystemRepository ?? (_fileOnFileSystemRepository = new FileOnFileSystemRepository(_context));
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
     }

@@ -9,8 +9,8 @@ namespace VegaStore.Core.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        //IQueryable<TEntity> GetAll(bool trackChanges);
-        //IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression, bool trackChanges);
+        IQueryable<TEntity> GetAll(bool trackChanges);
+        IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> expression, bool trackChanges);
 
         Task AddAsync(TEntity entity);
         Task AddRangeAsync(IEnumerable<TEntity> entities);

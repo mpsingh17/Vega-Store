@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<ListFileOnFileSystemViewModel>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -11,12 +12,21 @@
 <hr />
 
 <div class="row">
-    <div class="col">
-        <p>Image 1</p>
-    </div>
-    
-    <div class="col">
-        <p>Image 2</p>
-    </div>
+
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            
+            <div class="card" style="width: 18rem;">
+                <img src="~/@item.Path" class="card-img-top" alt="@item.Path">
+                <div class="card-body">
+                    <p>@Html.DisplayNameFor(model => model.CreatedAt): @item.CreatedAt</p>
+                    <p>#ID: @item.Id</p>
+                    <a href="#" class="btn btn-primary">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+
 </div>
 

@@ -11,6 +11,7 @@ namespace VegaStore.Core.Repositories
         IModelRepository Models { get; }
         IFeatureRepository Features { get; }
         IVehicleRepository Vehicles { get; }
+        IFileOnFileSystemRepository FilesOnFileSystem { get; }
 
         Task SaveAsync();
     }
