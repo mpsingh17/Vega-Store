@@ -17,7 +17,9 @@ namespace VegaStore.UI.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var claims = User.Claims;
+
+            return View(claims);
         }
 
         public IActionResult Privacy()

@@ -1,8 +1,34 @@
-﻿@{
+﻿@model IEnumerable<System.Security.Claims.Claim>
+
+@{
     ViewData["Title"] = "Home Page";
+    var firstClaim = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 }
 
 <div class="text-center">
     <h1 class="text-primary">Welcome to Vega Store</h1>
-    <p>This project is under construction. Using this customers will be able to view Vehicles listed by the owner.</p>
+    <p>This project is under construction. This will help customers/visitors to view Vehicles listed by the owner.</p>
 </div>
+<hr />
+
+<div class="row">
+    <div class="col">
+        <h3>Claims</h3>
+        @foreach (var item in Model)
+        {
+            <p><b>Type:</b> @item.Type</p>
+            <p><b>Value:</b> @item.Value</p>
+        }
+    </div>
+</div>
+<hr />
+
+<p>
+    <h3>First Claim</h3>
+    @firstClaim
+</p>
+
+<p>
+    <h3>Authentication Type</h3>
+    @User.Identity.AuthenticationType
+</p>
