@@ -1,0 +1,14 @@
+﻿@model Microsoft.AspNetCore.Http.IRequestCookieCollection
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Cookies</h1>
+
+<div>
+    @foreach (var item in Model)
+    {
+        <p>@item.Key : @item.Value</p>
+    }
+</div>
