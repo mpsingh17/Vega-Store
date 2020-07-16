@@ -16,13 +16,13 @@
     @foreach (var item in Model)
     {
         <div class="col-3">
-            
+
             <div class="card" style="width: 18rem;">
                 <img src="~/@item.Path" class="card-img-top" alt="@item.Path">
                 <div class="card-body">
                     <p>@Html.DisplayNameFor(model => model.CreatedAt): @item.CreatedAt</p>
                     <p>#ID: @item.Id</p>
-                    <a href="#" class="btn btn-primary">Delete</a>
+                    <a data-toggle="modal" data-target="#confirmDeleteModal" asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-primary">Delete</a>
                 </div>
             </div>
         </div>
@@ -30,3 +30,8 @@
 
 </div>
 
+<partial name="_ConfirmDeleteModalPartial" />
+
+@section Scripts {
+    <script src="~/js/deleteResource.js"></script>
+}

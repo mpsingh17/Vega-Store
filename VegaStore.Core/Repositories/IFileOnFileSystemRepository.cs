@@ -9,5 +9,6 @@ namespace VegaStore.Core.Repositories
     public interface IFileOnFileSystemRepository : IRepository<FileOnFileSystem>
     {
         Task<IEnumerable<FileOnFileSystem>> GetAllFilesOnFileSystemAsync(bool trackChanges);
+        Task<FileOnFileSystem> GetSingleFileOnFileSystemAsync(int id, bool trackChanges);
     }
 }

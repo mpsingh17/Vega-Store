@@ -19,7 +19,8 @@
                 },
                 success: function (data, textStatus, jqXHR) {
                     $confirmDeleteModal.modal("hide");
-                    window.location.reload();
+                    //window.location.reload();
+                    console.log(data, textStatus, jqXHR);
                 },
                 statusCode: {
                     404: function () {

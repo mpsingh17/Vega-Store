@@ -18,5 +18,11 @@ namespace VegaStore.Infrastructure.Data.Repositories
         {
             return await GetAll(trackChanges).ToListAsync();
         }
+
+        public async Task<FileOnFileSystem> GetSingleFileOnFileSystemAsync(int id, bool trackChanges)
+        {
+            return await FindByCondition(file => file.Id.Equals(id), trackChanges)
+                .SingleOrDefaultAsync();
+        }
     }
 }
