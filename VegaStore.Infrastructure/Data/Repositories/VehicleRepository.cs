@@ -17,11 +17,11 @@ namespace VegaStore.Infrastructure.Data.Repositories
             : base(context) {}
 
         //public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
-        public PagedList<Vehicle> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
+        public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
         {
             var query = GetAll(trackChanges);
 
-            var searchTerm = vehicleParameters.Search.Value;
+            var searchTerm = vehicleParameters.Search?.Value;
             if (searchTerm != null)
                 query = query.Where(v => v.Name.Contains(searchTerm.Trim().ToLower()));
 
@@ -51,8 +51,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
 
             query = query.Include(v => v.Model);
 
-            return PagedList<Vehicle>.ToPagedList(query, vehicleParameters.Start, vehicleParameters.Length);
-            //return await query.ToListAsync();
+            return await PagedList<Vehicle>.ToPagedList(query, vehicleParameters.Start, vehicleParameters.Length);
         }
 
         public async Task<int> GetVehiclesCount() => await GetAll(trackChanges: false).CountAsync();

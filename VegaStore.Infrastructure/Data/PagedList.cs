@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace VegaStore.Core.RequestFeatures
+namespace VegaStore.Infrastructure.Data
 {
     public class PagedList<T> : List<T>
     {
@@ -15,11 +17,11 @@ namespace VegaStore.Core.RequestFeatures
             AddRange(items);
         }
 
-        public static PagedList<T> ToPagedList(IQueryable<T> source, int start, int length)
+        public async static Task<PagedList<T>> ToPagedList(IQueryable<T> source, int start, int length)
         {
             var count = source.Count();
 
-            var items = source.Skip(start).Take(length).ToList();
+            var items = await source.Skip(start).Take(length).ToListAsync();
 
             return new PagedList<T>(items, count);
         }

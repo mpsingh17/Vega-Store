@@ -16,6 +16,7 @@ using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.Core.Services;
+using VegaStore.Infrastructure.Data;
 using VegaStore.UI.ActionFilters;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
@@ -50,7 +51,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] VehicleParameters vehicleParameters)
+        public async Task<IActionResult> Post([FromBody] VehicleParameters vehicleParameters)
         {
             _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParameters)}");
 
@@ -60,7 +61,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 //return BadRequest(ModelState);
             }
 
-            var vehiclesInDb = _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false) as PagedList<Vehicle>;
             var recordsTotal = vehiclesInDb.ItemsCount;
 
             var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);

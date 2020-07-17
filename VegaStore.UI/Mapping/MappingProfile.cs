@@ -11,6 +11,7 @@ using VegaStore.UI.ViewModels.FeatureViewModels;
 using VegaStore.UI.ViewModels.FileOnFileSystemViewModels;
 using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ViewModels.ModelViewModels;
+using VegaStore.UI.ViewModels.Public.VehicleViewModels;
 using VegaStore.UI.ViewModels.UserViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
@@ -67,6 +68,13 @@ namespace VegaStore.UI.Mapping
             CreateMap<FileOnFileSystem, ListFileOnFileSystemViewModel>()
                 .ForMember(vm => vm.Path, opt => opt.MapFrom(file => "uploads\\" + file.Path))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(file => file.CreatedAt.ToLongDateString()));
+            
+            #region Public View Models
+            CreateMap<Vehicle, ListVehiclesViewModel>()
+                .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
+                .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
+            #endregion
             #endregion
         }
     }
