@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VegaCore.Infrastructure.Data;
+using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
+using VegaStore.Infrastructure.Data.Extensions;
 
 namespace VegaStore.Infrastructure.Data.Repositories
 {
@@ -16,8 +18,7 @@ namespace VegaStore.Infrastructure.Data.Repositories
         public VehicleRepository(EFCoreContext context)
             : base(context) {}
 
-        //public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
-        public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
+        public async Task<QueryResult<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
         {
             var query = GetAll(trackChanges);
 
@@ -48,10 +49,14 @@ namespace VegaStore.Infrastructure.Data.Repositories
                     query = query.Where(v => v.Price >= vehicleParameters.MinPrice && v.Price <= vehicleParameters.MaxPrice);
                 }
             }
+            var vehiclesCount = await query.CountAsync();
 
             query = query.Include(v => v.Model);
+            query = query.ApplyPagination<Vehicle>(vehicleParameters.Start, vehicleParameters.Length);
 
-            return await PagedList<Vehicle>.ToPagedList(query, vehicleParameters.Start, vehicleParameters.Length);
+            var vehicles = await query.ToListAsync();
+
+            return new QueryResult<Vehicle> { Items = vehicles, ItemCount = vehiclesCount };
         }
 
         public async Task<int> GetVehiclesCount() => await GetAll(trackChanges: false).CountAsync();

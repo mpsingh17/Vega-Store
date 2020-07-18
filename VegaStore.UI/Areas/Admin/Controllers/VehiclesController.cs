@@ -61,10 +61,10 @@ namespace VegaStore.UI.Areas.Admin.Controllers
                 //return BadRequest(ModelState);
             }
 
-            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false) as PagedList<Vehicle>;
-            var recordsTotal = vehiclesInDb.ItemsCount;
+            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var recordsTotal = vehiclesInDb.ItemCount;
 
-            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb);
+            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb.Items);
 
             return Ok(new
             {
