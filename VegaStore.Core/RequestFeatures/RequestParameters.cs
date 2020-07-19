@@ -18,7 +18,8 @@ namespace VegaStore.Core.RequestFeatures
         public int Draw { get; set; }
         public int Start { get; set; }
 
-        public DTSearch Search { get; set; }
+        public string Value { get; set; }
+        public bool Regex { get; set; }
 
     }
 }

@@ -70,7 +70,7 @@
             const $vehicleTable = $("#vehicles").DataTable({
                 "processing": true,
                 "serverSide": true,
-                "pageLength": 2,
+                "pageLength": 10,
                 language: {
                     searchPlaceholder: "Search by name"
                 },
@@ -148,6 +148,7 @@
             $("#clearFilters").on("click", function (e) {
                 //window.location.reload();
                 $("#filterForm").find("input[type=text], select").val("");
+                $vehicleTable.draw();
             });
         });
     </script>

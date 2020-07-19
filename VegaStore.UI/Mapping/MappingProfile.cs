@@ -12,6 +12,7 @@ using VegaStore.UI.ViewModels.FileOnFileSystemViewModels;
 using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ViewModels.ModelViewModels;
 using VegaStore.UI.ViewModels.Public.VehicleViewModels;
+using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
 using VegaStore.UI.ViewModels.UserViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
@@ -32,6 +33,10 @@ namespace VegaStore.UI.Mapping
 
             CreateMap<EditVehicleViewModel, Vehicle>()
                 .ForMember(v => v.VehicleFeatures, opt => opt.MapFrom(vm => vm.FeatureIds.Select(fId => new VehicleFeature { FeatureId = fId })));
+
+            CreateMap<VehicleParametersViewModel, VehicleParameters>()
+                .ForMember(vp => vp.Value, opt => opt.MapFrom(vm => vm.Search.Value))
+                .ForMember(vp => vp.Regex, opt => opt.MapFrom(vm => vm.Search.Regex));
             #endregion
 
             #region Model to ViewModel

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace VegaStore.Core.RequestFeatures
+namespace VegaStore.UI.ViewModels.RequestFeaturesViewModels
 {
     public class DTSearch
     {

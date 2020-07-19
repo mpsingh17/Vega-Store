@@ -22,36 +22,12 @@ namespace VegaStore.Infrastructure.Data.Repositories
         {
             var query = GetAll(trackChanges);
 
-            var searchTerm = vehicleParameters.Search?.Value;
-            if (searchTerm != null)
-                query = query.Where(v => v.Name.Contains(searchTerm.Trim().ToLower()));
+            query = query.Include(v => v.Model).AsQueryable();
 
-            if (Enum.TryParse(vehicleParameters.Color, out Colors color))
-            {
-                var totalEnumItems = Enum.GetNames(typeof(Colors)).Length;
+            query = query.ApplyFilters(vehicleParameters);
 
-                if (color > 0 && (int)color <= totalEnumItems)
-                    query = query.Where(v => v.Color.Equals(color));
-            }
-            
-            if (Enum.TryParse(vehicleParameters.Condition, out Condition condition))
-            {
-                var totalEnumItems = Enum.GetNames(typeof(Condition)).Length;
-
-                if (condition > 0 && (int)condition <= totalEnumItems)
-                    query = query.Where(v => v.Condition.Equals(condition));
-            }
-
-            if (vehicleParameters.MinPrice != null && vehicleParameters.MaxPrice != null)
-            {
-                if (vehicleParameters.MinPrice > 0 && vehicleParameters.MinPrice < vehicleParameters.MaxPrice)
-                {
-                    query = query.Where(v => v.Price >= vehicleParameters.MinPrice && v.Price <= vehicleParameters.MaxPrice);
-                }
-            }
             var vehiclesCount = await query.CountAsync();
 
-            query = query.Include(v => v.Model);
             query = query.ApplyPagination<Vehicle>(vehicleParameters.Start, vehicleParameters.Length);
 
             var vehicles = await query.ToListAsync();

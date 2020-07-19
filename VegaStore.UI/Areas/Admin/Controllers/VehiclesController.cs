@@ -18,6 +18,7 @@ using VegaStore.Core.RequestFeatures;
 using VegaStore.Core.Services;
 using VegaStore.Infrastructure.Data;
 using VegaStore.UI.ActionFilters;
+using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
@@ -51,15 +52,16 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] VehicleParameters vehicleParameters)
+        public async Task<IActionResult> Post([FromBody] VehicleParametersViewModel vehicleParametersViewModel)
         {
-            _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParameters)}");
+            _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParametersViewModel)}");
 
-            if (vehicleParameters is null)
+            if (vehicleParametersViewModel is null)
             {
                 return BadRequest("Invalid vehicle filter parameters sent.");
-                //return BadRequest(ModelState);
             }
+
+            var vehicleParameters = _mapper.Map<VehicleParameters>(vehicleParametersViewModel);
 
             var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
             var recordsTotal = vehiclesInDb.ItemCount;
@@ -68,7 +70,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             return Ok(new
             {
-                vehicleParameters.Draw,
+                vehicleParametersViewModel.Draw,
                 recordsTotal,
                 recordsFiltered = recordsTotal,
                 data = result
