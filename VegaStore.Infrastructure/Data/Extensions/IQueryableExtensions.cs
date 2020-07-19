@@ -9,7 +9,7 @@ using VegaStore.Core.RequestFeatures;
 
 namespace VegaStore.Infrastructure.Data.Extensions
 {
-    public static class QueryableExtensions
+    public static class IQueryableExtensions
     {
         public static IQueryable<Vehicle> ApplyFilters(this IQueryable<Vehicle> query, VehicleParameters vehicleParameters)
         {
