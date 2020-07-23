@@ -51,6 +51,19 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return View(result);
         }
 
+        [Route("api/makes")]
+        public async Task<IActionResult> GetMakes()
+        {
+            var userId = _userService.GetUserId(User);
+
+            var makes = await _repository.Makes.GetAllMakesAsync(userId, trackChanges: false);
+
+            var result = _mapper.Map<IEnumerable<ListMakeViewModel>>(makes);
+
+            _logger.LogInformation(LogEventId.Success, "{MakesCount} Makes have been sent.", result.Count());
+            return Ok(result);
+        }
+
         [ImportModelState]
         public IActionResult Create()
         {

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    ViewData["Edit"] = Url.Action("Edit", "Makes", new { Area = "Admin" });
 }
 
 <h1>Index</h1>
@@ -9,21 +10,14 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+
+@*<table class="table">
     <thead>
         <tr>
-            <th>
-                #
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                Actions
-            </th>
+            <th>#</th>
+            <th>@Html.DisplayNameFor(model => model.Name)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -46,10 +40,50 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@
+
+<div id="app">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="make in makes">
+                <td>{{ make.id }}</td>
+                <td>{{ make.name }}</td>
+                <td>{{ make.createdAt }}</td>
+                <td>
+                    <a :href="make.id">Edit</a> |
+                    @*<a data-toggle="modal" data-target="#confirmDeleteModal" asp-area="Admin" asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <partial name="_ConfirmDeleteModalPartial" />
 
 @section Scripts {
     <script src="~/js/deleteResource.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                makes: [],
+            },
+            mounted: function () {
+                fetch("api/makes")
+                    .then(res => res.json())
+                    .then(data => this.makes = data);
+            }
+        });
+    </script>
 }
