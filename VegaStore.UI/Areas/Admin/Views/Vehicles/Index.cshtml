@@ -79,9 +79,10 @@
                     type: "POST",
                     contentType: "application/json",
                     data: function (d) {
-
+                        console.log(d);
                         // Collect custom filter values.
                         const filterFormObjArr = $("#filterForm").serializeArray();
+
                         filterFormObjArr.forEach(function (fieldObj) {
                             if (fieldObj["value"] !== "" && fieldObj["value"] !== undefined) {
 
@@ -125,7 +126,7 @@
                         data: "createdAt",
                         searchable: false
                     },
-                    {
+                    @*{
                         data: "id",
                         orderable: false,
                         searchable: false,
@@ -133,6 +134,25 @@
                             return `<a class="btn btn-link" href="@ViewData["EditVehicleURL"]/${data}">Edit</a> |
                                 <a class="btn btn-link" href="@ViewData["DetailVehicleURL"]/${data}">Details</a> |
                                 <a data-toggle="modal" data-target="#confirmDeleteModal" href="@ViewData["DeleteVehicleURL"]/${data}">Delete</a>`;
+                        }
+                    }*@
+                    {
+                        data: "links",
+                        render: function (data) {
+                            let result = "";
+                            data.forEach(function (linkObj) {
+
+                                if (linkObj["rel"] == "self" && linkObj["method"] == "GET")
+                                    result = result + `<a class="btn btn-link" href="${linkObj.href}">Details</a> | `;
+
+                                if (linkObj["rel"] == "edit_vehicle" && linkObj["method"] == "GET")
+                                    result = result + `<a class="btn btn-link" href="${linkObj.href}">Edit</a> | `;
+
+                                if (linkObj["rel"] == "delete_vehicle" && linkObj["method"] == "DELETE")
+                                    result = result + `<a data-toggle="modal" data-target="#confirmDeleteModal" class="btn btn-link" href="${linkObj.href}">Delete</a> | `;
+                            });
+
+                            return result;
                         }
                     }
                 ]

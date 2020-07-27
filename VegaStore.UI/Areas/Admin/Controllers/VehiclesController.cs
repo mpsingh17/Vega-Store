@@ -12,12 +12,15 @@ using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Serilog.Events;
+using VegaStore.Core.Constants;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.Core.Services;
 using VegaStore.Infrastructure.Data;
 using VegaStore.UI.ActionFilters;
+using VegaStore.UI.Utility;
 using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
@@ -30,6 +33,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         private readonly ILogger<VehiclesController> _logger;
         private readonly IRepositoryManager _repository;
         private readonly IUserService _userService;
+        private readonly LinkBuilder _linkBuilder;
         private readonly IMapper _mapper;
 
         public VehiclesController(
@@ -37,10 +41,12 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             ILogger<VehiclesController> logger,
             IRepositoryManager repository,
             IUserService userService,
+            LinkBuilder linkBuilder,
             IMapper mapper)
         {
             _webHostEnvironment = webHostEnvironment;
             _userService = userService;
+            _linkBuilder = linkBuilder;
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
@@ -58,15 +64,18 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             if (vehicleParametersViewModel is null)
             {
+                _logger.LogWarning(LogEventId.Warning, "Invalid vehicle parameters sent by client. {vehicleParametersViewModel}", vehicleParametersViewModel);
                 return BadRequest("Invalid vehicle filter parameters sent.");
             }
 
             var vehicleParameters = _mapper.Map<VehicleParameters>(vehicleParametersViewModel);
 
-            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
-            var recordsTotal = vehiclesInDb.ItemCount;
+            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var recordsTotal = queryResult.ItemCount;
 
-            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(vehiclesInDb.Items);
+            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(queryResult.Items);
+
+            _linkBuilder.GenerateVehicleLinks(result, HttpContext);
 
             return Ok(new
             {
@@ -148,6 +157,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [ImportModelState]
+        [HttpGet(Name = nameof(Edit))]
         [ServiceFilter(typeof(CheckVehicleExists))]
         public async Task<IActionResult> Edit(int id)
         {
@@ -216,6 +226,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet(Name = nameof(Detail))]
         [ServiceFilter(typeof(CheckVehicleExists))]
         public IActionResult Detail(int id)
         {

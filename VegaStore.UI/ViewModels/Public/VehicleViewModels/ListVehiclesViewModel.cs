@@ -24,5 +24,7 @@ namespace VegaStore.UI.ViewModels.Public.VehicleViewModels
         public string Model { get; set; }
 
         public string CreatedAt { get; set; }
+
+        public IEnumerable<LinkViewModel> Links { get; set; }
     }
 }

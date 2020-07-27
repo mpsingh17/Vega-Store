@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using VegaStore.UI.Extensions;
 using AutoMapper;
 using VegaStore.UI.ActionFilters;
+using Microsoft.EntityFrameworkCore.Internal;
+using VegaStore.UI.Utility;
 
 namespace VegaStore.UI
 {
@@ -34,11 +36,14 @@ namespace VegaStore.UI
             services.ConfigureRepositoryManager();
             services.ConfigureServices();
 
+            // Action FIlters
             services.AddScoped<CheckMakeExists>();
             services.AddScoped<CheckMakeOfModelExists>();
             services.AddScoped<CheckModelExists>();
             services.AddScoped<CheckFeatureExists>();
             services.AddScoped<CheckVehicleExists>();
+
+            services.AddScoped<LinkBuilder>();
 
             services.AddAuthorization(options =>
             {
