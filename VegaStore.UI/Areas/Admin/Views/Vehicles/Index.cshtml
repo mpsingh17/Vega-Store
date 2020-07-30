@@ -126,18 +126,10 @@
                         data: "createdAt",
                         searchable: false
                     },
-                    @*{
-                        data: "id",
-                        orderable: false,
-                        searchable: false,
-                        render: function (data) {
-                            return `<a class="btn btn-link" href="@ViewData["EditVehicleURL"]/${data}">Edit</a> |
-                                <a class="btn btn-link" href="@ViewData["DetailVehicleURL"]/${data}">Details</a> |
-                                <a data-toggle="modal" data-target="#confirmDeleteModal" href="@ViewData["DeleteVehicleURL"]/${data}">Delete</a>`;
-                        }
-                    }*@
                     {
                         data: "links",
+                        orderable: false,
+                        searchable: false,
                         render: function (data) {
                             let result = "";
                             data.forEach(function (linkObj) {
