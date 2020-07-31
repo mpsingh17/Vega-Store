@@ -24,11 +24,19 @@ namespace VegaStore.UI.Controllers
 
         public async Task<IActionResult> Index(VehicleParameters vehicleParameters)
         {
-            var vehiclesInDb = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
 
-            var result = _mapper.Map<IEnumerable<ListVehiclesViewModel>>(vehiclesInDb);
+            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(queryResult.Items);
 
-            return View(result);
+            var paginatedListVehicleVM = new PaginatedListVehicleViewModel
+            {
+                TotalVehicles = queryResult.ItemCount,
+                Vehicles = result,
+                Start = vehicleParameters.Start,
+                Length = vehicleParameters.Length
+            };
+
+            return View(paginatedListVehicleVM);
         }
     }
 }

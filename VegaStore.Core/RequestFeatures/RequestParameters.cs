@@ -6,7 +6,7 @@ namespace VegaStore.Core.RequestFeatures
 {
     public class RequestParameters
     {
-        private const int _maxPageSize = 10;
+        private const int _maxPageSize = 2;
 
         private int _pageSize = _maxPageSize;
         public int Length

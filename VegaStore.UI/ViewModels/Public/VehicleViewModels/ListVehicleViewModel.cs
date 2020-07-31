@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VegaStore.UI.ViewModels.Public.VehicleViewModels
 {
-    public class ListVehiclesViewModel
+    public class ListVehicleViewModel
     {
         public int Id { get; set; }
 
@@ -14,6 +14,8 @@ namespace VegaStore.UI.ViewModels.Public.VehicleViewModels
 
         [Display(Name = "Registered")]
         public string IsRegistered { get; set; }
+
+        public string FeatureImage { get; set; }
 
         public string Color { get; set; }
 
@@ -26,5 +28,9 @@ namespace VegaStore.UI.ViewModels.Public.VehicleViewModels
         public string CreatedAt { get; set; }
 
         public IEnumerable<LinkViewModel> Links { get; set; }
+
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 3;
+        public int ItemsTotal { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ListVehiclesViewModel>
+﻿@model PaginatedListVehicleViewModel
 @{
     ViewData["Title"] = "Index";
 }
@@ -8,20 +8,68 @@
         <h1>Vehicles</h1>
         <hr />
         <div class="row">
-            @foreach (var item in Model)
+            @foreach (var item in Model.Vehicles)
             {
                 <div class="col-3 mb-2">
                     <div class="card">
+
+                        <img src="~/uploads/@item.FeatureImage" class="card-img-top" alt="@item.Name">
+
                         <div class="card-header">
                             <h3 class="card-title">@item.Name</h3>
                         </div>
+
                         <div class="card-body">
                             <p>@item.Price</p>
-
                         </div>
                     </div>
                 </div>
             }
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <hr />
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item @(Model.HasPrevious ? "" : "disabled") ">
+                            <a
+                                class="page-link"
+                                asp-area=""
+                                asp-action="Index"
+                                asp-route-start="@(Model.Start - Model.Length)"
+                                asp-route-length="@Model.Length">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        @for (int i = 0; i < (Model.TotalVehicles / Model.Length); i++)
+                        {
+                            <li class="page-item @((Model.Start / Model.Length) == i ? "active" : "")">
+                                <a
+                                   class="page-link"
+                                   asp-area=""
+                                   asp-action="Index"
+                                   asp-route-start="@(Model.Length * i)"
+                                   asp-route-length="@Model.Length">
+                                    @(i + 1)
+                                </a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.HasNext ? "" : "disabled") ">
+                            <a
+                                class="page-link"
+                                asp-area=""
+                                asp-action="Index"
+                                asp-route-start="@(Model.Start + Model.Length)"
+                                asp-route-length="@Model.Length">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </div>

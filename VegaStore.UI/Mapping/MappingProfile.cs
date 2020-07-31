@@ -53,7 +53,7 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(f => f.CreatedAt.ToLongDateString()));
             CreateMap<Feature, EditFeatureViewModel>();
 
-            CreateMap<Vehicle, ListVehicleViewModel>()
+            CreateMap<Vehicle, ViewModels.VehicleViewModels.ListVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
@@ -73,9 +73,9 @@ namespace VegaStore.UI.Mapping
             CreateMap<FileOnFileSystem, ListFileOnFileSystemViewModel>()
                 .ForMember(vm => vm.Path, opt => opt.MapFrom(file => "uploads\\" + file.Path))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(file => file.CreatedAt.ToLongDateString()));
-            
+
             #region Public View Models
-            CreateMap<Vehicle, ListVehiclesViewModel>()
+            CreateMap<Vehicle, ViewModels.Public.VehicleViewModels.ListVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
