@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.ViewModels.RequestFeatureViewModels;
 
 namespace VegaStore.UI.ViewModels.VehicleViewModels
 {
@@ -7,6 +8,6 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
     {
         public IEnumerable<VehicleViewModel> Vehicles { get; set; }
 
-        public VehicleParametersViewModel VehicleParametersVM { get; set; }
+        public PublicVehicleRequestParametersVM VehicleRequestParametersVM { get; set; }
     }
 }

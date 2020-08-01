@@ -4,7 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Repositories;
-using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.ViewModels.RequestFeatureViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Controllers
@@ -20,19 +20,20 @@ namespace VegaStore.UI.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(VehicleParametersViewModel vehicleParametersVM)
+        public async Task<IActionResult> Index(PublicVehicleRequestParametersVM vehicleRequestParametersVM)
         {
-            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleParametersVM);
+            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleRequestParametersVM);
             
-            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleQueryParameters, trackChanges: false);
+            var queryResult = await _repository.Vehicles
+                .GetAllVehiclesAsync(vehicleQueryParameters, trackChanges: false);
 
             var vehicleVMs = _mapper.Map<IEnumerable<VehicleViewModel>>(queryResult.Items);
 
-            vehicleParametersVM.TotalItemsCount = queryResult.ItemCount;
+            vehicleRequestParametersVM.TotalItemsCount = queryResult.ItemCount;
 
             var listVehicleVM = new PublicListVehicleViewModel
             {
-                VehicleParametersVM = vehicleParametersVM,
+                VehicleRequestParametersVM = vehicleRequestParametersVM,
                 Vehicles = vehicleVMs
             };
 
