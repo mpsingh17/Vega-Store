@@ -56,19 +56,17 @@ namespace VegaStore.UI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] VehicleParametersViewModel vehicleParametersViewModel)
+        public async Task<IActionResult> Post([FromBody] VehicleRequestParametersVM vehicleRequestParametersVM)
         {
-            _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleParametersViewModel)}");
+            _logger.LogInformation($"Vehicle paramaters {JsonConvert.SerializeObject(vehicleRequestParametersVM)}");
 
-            if (vehicleParametersViewModel is null)
+            if (vehicleRequestParametersVM is null)
             {
-                _logger.LogWarning(LogEventId.Warning, "Invalid vehicle parameters sent by client. {vehicleParametersViewModel}", vehicleParametersViewModel);
+                _logger.LogWarning(LogEventId.Warning, "Invalid vehicle parameters sent by client. {vehicleParametersViewModel}", vehicleRequestParametersVM);
                 return BadRequest("Invalid vehicle filter parameters sent.");
             }
 
-            var vehicleParameters = _mapper.Map<VehicleParameters>(vehicleParametersViewModel);
-
-            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleParameters);
+            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleRequestParametersVM);
 
             var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleQueryParameters, trackChanges: false);
             var recordsTotal = queryResult.ItemCount;
@@ -79,7 +77,7 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             return Ok(new
             {
-                vehicleParametersViewModel.Draw,
+                vehicleRequestParametersVM.Draw,
                 recordsTotal,
                 recordsFiltered = recordsTotal,
                 data = result

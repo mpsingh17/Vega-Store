@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels
 {
-    public class VehicleParametersViewModel : RequestFeaturesViewModel
+    public class VehicleRequestParametersVM : RequestFeaturesViewModel
     {
         public string Color { get; set; }
         public string Condition { get; set; }

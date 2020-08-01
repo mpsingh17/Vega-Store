@@ -19,11 +19,9 @@ namespace VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels
         public int Draw { get; set; }
         public int Start { get; set; }
 
-        public int TotalItemsCount { get; set; }
-
-        public bool HasPrevious => Start > 0;
-
-        public bool HasNext => (Start + Length) < TotalItemsCount;
+        //public int TotalItemsCount { get; set; }
+        //public bool HasPrevious => Start > 0;
+        //public bool HasNext => (Start + Length) < TotalItemsCount;
 
         public DTSearch Search { get; set; }
     }
