@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.RequestFeatures;
 
@@ -11,13 +12,13 @@ namespace VegaStore.Infrastructure.Data.Extensions
 {
     public static class IQueryableExtensions
     {
-        public static IQueryable<Vehicle> ApplyFilters(this IQueryable<Vehicle> query, VehicleParameters vehicleParameters)
+        public static IQueryable<Vehicle> ApplyFilters(this IQueryable<Vehicle> query, VehicleQueryParameters vehicleQueryParameters)
         {
-            var searchTerm = vehicleParameters.Value;
+            var searchTerm = vehicleQueryParameters.SearchTerm;
             if (!string.IsNullOrEmpty(searchTerm))
                 query = query.Where(v => v.Name.Contains(searchTerm.Trim().ToLower()));
 
-            if (Enum.TryParse(vehicleParameters.Color, out Colors color))
+            if (Enum.TryParse(vehicleQueryParameters.Color, out Colors color))
             {
                 var totalEnumItems = Enum.GetNames(typeof(Colors)).Length;
 
@@ -25,7 +26,7 @@ namespace VegaStore.Infrastructure.Data.Extensions
                     query = query.Where(v => v.Color.Equals(color));
             }
 
-            if (Enum.TryParse(vehicleParameters.Condition, out Condition condition))
+            if (Enum.TryParse(vehicleQueryParameters.Condition, out Condition condition))
             {
                 var totalEnumItems = Enum.GetNames(typeof(Condition)).Length;
 
@@ -33,20 +34,23 @@ namespace VegaStore.Infrastructure.Data.Extensions
                     query = query.Where(v => v.Condition.Equals(condition));
             }
 
-            if (vehicleParameters.MinPrice.HasValue && vehicleParameters.MaxPrice.HasValue)
+            if (vehicleQueryParameters.MinPrice.HasValue && vehicleQueryParameters.MaxPrice.HasValue)
             {
-                if (vehicleParameters.MinPrice.Value > 0 && vehicleParameters.MinPrice.Value < vehicleParameters.MaxPrice.Value)
+                if (vehicleQueryParameters.MinPrice.Value > 0 && vehicleQueryParameters.MinPrice.Value < vehicleQueryParameters.MaxPrice.Value)
                 {
-                    query = query.Where(v => v.Price >= vehicleParameters.MinPrice.Value && v.Price <= vehicleParameters.MaxPrice.Value);
+                    query = query.Where(v => v.Price >= vehicleQueryParameters.MinPrice.Value && v.Price <= vehicleQueryParameters.MaxPrice.Value);
                 }
             }
 
             return query;
         }
 
-        public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> query, int skip, int take)
+        public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> query, VehicleQueryParameters vehicleQueryParameters)
         {
-            return query.Skip(skip).Take(take);
+
+            return query
+                .Skip((vehicleQueryParameters.PageNumber - 1) * vehicleQueryParameters.PageSize)
+                .Take(vehicleQueryParameters.PageSize);
         }
 
         

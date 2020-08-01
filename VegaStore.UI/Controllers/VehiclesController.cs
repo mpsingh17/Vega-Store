@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.UI.ViewModels.Public.VehicleViewModels;
+using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
 
 namespace VegaStore.UI.Controllers
 {
@@ -22,21 +24,23 @@ namespace VegaStore.UI.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(VehicleParameters vehicleParameters)
+        public async Task<IActionResult> Index(VehicleParametersViewModel vehicleParametersVM)
         {
-            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleParametersVM);
+            
+            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleQueryParameters, trackChanges: false);
 
-            var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(queryResult.Items);
+            var vehicleVMs = _mapper.Map<IEnumerable<VehicleViewModel>>(queryResult.Items);
 
-            var paginatedListVehicleVM = new PaginatedListVehicleViewModel
+            vehicleParametersVM.TotalItemsCount = queryResult.ItemCount;
+
+            var listVehicleVM = new ListVehicleViewModel
             {
-                TotalVehicles = queryResult.ItemCount,
-                Vehicles = result,
-                Start = vehicleParameters.Start,
-                Length = vehicleParameters.Length
+                VehicleParametersVM = vehicleParametersVM,
+                Vehicles = vehicleVMs
             };
 
-            return View(paginatedListVehicleVM);
+            return View(listVehicleVM);
         }
     }
 }

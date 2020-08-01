@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Serilog.Events;
 using VegaStore.Core.Constants;
+using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
@@ -70,7 +71,9 @@ namespace VegaStore.UI.Areas.Admin.Controllers
 
             var vehicleParameters = _mapper.Map<VehicleParameters>(vehicleParametersViewModel);
 
-            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleParameters, trackChanges: false);
+            var vehicleQueryParameters = _mapper.Map<VehicleQueryParameters>(vehicleParameters);
+
+            var queryResult = await _repository.Vehicles.GetAllVehiclesAsync(vehicleQueryParameters, trackChanges: false);
             var recordsTotal = queryResult.ItemCount;
 
             var result = _mapper.Map<IEnumerable<ListVehicleViewModel>>(queryResult.Items);

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.UI.ViewModels.FeatureViewModels;
@@ -51,12 +52,19 @@ namespace VegaStore.UI.Mapping
 
             CreateMap<Feature, ListFeatureViewModel>()
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(f => f.CreatedAt.ToLongDateString()));
+            
             CreateMap<Feature, EditFeatureViewModel>();
 
             CreateMap<Vehicle, ViewModels.VehicleViewModels.ListVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
+
+            CreateMap<Vehicle, VehicleViewModel>()
+                .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
+                .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
+
 
             CreateMap<Vehicle, EditVehicleViewModel>()
                 .ForMember(vm => vm.FeatureIds, opt => opt.MapFrom(v => v.VehicleFeatures.Select(vf => vf.FeatureId)))
@@ -75,11 +83,18 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(file => file.CreatedAt.ToLongDateString()));
 
             #region Public View Models
-            CreateMap<Vehicle, ViewModels.Public.VehicleViewModels.ListVehicleViewModel>()
+            CreateMap<Vehicle, ViewModels.Public.VehicleViewModels.VehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
             #endregion
+            #endregion
+
+            #region Request Parameter ViewModel to Query Parameters
+            CreateMap<VehicleParametersViewModel, VehicleQueryParameters>()
+                .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.Length))
+                .ForMember(dest => dest.PageNumber, opt => opt.MapFrom(src => (src.Start / src.Length) + 1));
+
             #endregion
         }
     }

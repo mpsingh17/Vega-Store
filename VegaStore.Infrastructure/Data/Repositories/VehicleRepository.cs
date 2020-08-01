@@ -18,17 +18,17 @@ namespace VegaStore.Infrastructure.Data.Repositories
         public VehicleRepository(EFCoreContext context)
             : base(context) {}
 
-        public async Task<QueryResult<Vehicle>> GetAllVehiclesAsync(VehicleParameters vehicleParameters, bool trackChanges)
+        public async Task<QueryResult<Vehicle>> GetAllVehiclesAsync(VehicleQueryParameters vehicleQueryParameters, bool trackChanges)
         {
             var query = GetAll(trackChanges);
 
             query = query.Include(v => v.Model).AsQueryable();
 
-            query = query.ApplyFilters(vehicleParameters);
+            query = query.ApplyFilters(vehicleQueryParameters);
 
             var vehiclesCount = await query.CountAsync();
 
-            query = query.ApplyPagination<Vehicle>(vehicleParameters.Start, vehicleParameters.Length);
+            query = query.ApplyPagination<Vehicle>(vehicleQueryParameters);
 
             var vehicles = await query.ToListAsync();
 
