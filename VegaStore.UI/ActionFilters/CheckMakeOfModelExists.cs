@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using VegaStore.Core.Constants;
 using VegaStore.Core.Repositories;
-using VegaStore.UI.ViewModels.ModelViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.ModelViewModels;
 
 namespace VegaStore.UI.ActionFilters
 {

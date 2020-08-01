@@ -1,20 +1,16 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.RequestFeatures;
-using VegaStore.UI.ViewModels.FeatureViewModels;
-using VegaStore.UI.ViewModels.FileOnFileSystemViewModels;
-using VegaStore.UI.ViewModels.MakeViewModels;
-using VegaStore.UI.ViewModels.ModelViewModels;
-using VegaStore.UI.ViewModels.Public.VehicleViewModels;
-using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
-using VegaStore.UI.ViewModels.UserViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.FeatureViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.FileOnFileSystemViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.MakeViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.ModelViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.UserViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.VehicleViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Mapping
@@ -55,7 +51,7 @@ namespace VegaStore.UI.Mapping
             
             CreateMap<Feature, EditFeatureViewModel>();
 
-            CreateMap<Vehicle, ViewModels.VehicleViewModels.ListVehicleViewModel>()
+            CreateMap<Vehicle, ListVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
@@ -83,7 +79,7 @@ namespace VegaStore.UI.Mapping
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(file => file.CreatedAt.ToLongDateString()));
 
             #region Public View Models
-            CreateMap<Vehicle, ViewModels.Public.VehicleViewModels.VehicleViewModel>()
+            CreateMap<Vehicle, VehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
                 .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
                 .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));

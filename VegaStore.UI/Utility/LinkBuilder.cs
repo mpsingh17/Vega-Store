@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VegaStore.UI.Areas.Admin.ViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.VehicleViewModels;
 using VegaStore.UI.ViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 

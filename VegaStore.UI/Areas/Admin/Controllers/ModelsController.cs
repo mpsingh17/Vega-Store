@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,7 @@ using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.Services;
 using VegaStore.UI.ActionFilters;
-using VegaStore.UI.ViewModels.ModelViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.ModelViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
 {

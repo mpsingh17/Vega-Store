@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using VegaStore.UI.ViewModels.UserViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using VegaStore.UI.Areas.Admin.ViewModels.UserViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
 {

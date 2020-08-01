@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using VegaStore.Infrastructure.Data;
 using VegaStore.Core.Constants;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.Services;
-using VegaStore.UI.ViewModels.MakeViewModels;
 using VegaStore.UI.ActionFilters;
+using VegaStore.UI.Areas.Admin.ViewModels.MakeViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
 {

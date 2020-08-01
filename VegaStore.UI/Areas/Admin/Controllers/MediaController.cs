@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VegaStore.Core.Constants;
 using VegaStore.Core.Repositories;
-using VegaStore.UI.ViewModels.FileOnFileSystemViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.FileOnFileSystemViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers
 {

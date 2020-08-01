@@ -8,21 +8,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Serilog.Events;
 using VegaStore.Core.Constants;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
 using VegaStore.Core.RequestFeatures;
 using VegaStore.Core.Services;
-using VegaStore.Infrastructure.Data;
 using VegaStore.UI.ActionFilters;
+using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.VehicleViewModels;
 using VegaStore.UI.Utility;
-using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
 using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Areas.Admin.Controllers

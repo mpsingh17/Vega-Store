@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using VegaStore.Core.DbQueryFeatures;
-using VegaStore.Core.Entities;
 using VegaStore.Core.Repositories;
-using VegaStore.Core.RequestFeatures;
-using VegaStore.UI.ViewModels.Public.VehicleViewModels;
-using VegaStore.UI.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Controllers
 {
@@ -34,7 +30,7 @@ namespace VegaStore.UI.Controllers
 
             vehicleParametersVM.TotalItemsCount = queryResult.ItemCount;
 
-            var listVehicleVM = new ListVehicleViewModel
+            var listVehicleVM = new PublicListVehicleViewModel
             {
                 VehicleParametersVM = vehicleParametersVM,
                 Vehicles = vehicleVMs
