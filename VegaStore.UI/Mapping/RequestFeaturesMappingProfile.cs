@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels;
+using VegaStore.UI.ViewModels;
 using VegaStore.UI.ViewModels.RequestFeatureViewModels;
 
 namespace VegaStore.UI.Mapping
@@ -24,6 +25,10 @@ namespace VegaStore.UI.Mapping
                 .ForMember(dest => dest.PageSize, opt => opt.MapFrom(src => src.Length))
                 .ForMember(dest => dest.PageNumber, opt => opt.MapFrom(src => (src.Start / src.Length) + 1))
                 .ForMember(dest => dest.SearchTerm, opt => opt.MapFrom(src => src.Search.Value));
+            #endregion
+
+            #region Public Request Parameter Objects to Pagination Object
+            CreateMap<PublicRequestParametersVM, PaginationDetails>();
             #endregion
         }
     }

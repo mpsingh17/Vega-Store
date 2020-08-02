@@ -7,7 +7,7 @@ namespace VegaStore.UI.Areas.Admin.ViewModels.RequestFeaturesViewModels
 {
     public class RequestFeaturesViewModel
     {
-        private const int _maxPageSize = 2;
+        private const int _maxPageSize = 10;
 
         private int _length = _maxPageSize;
         public int Length

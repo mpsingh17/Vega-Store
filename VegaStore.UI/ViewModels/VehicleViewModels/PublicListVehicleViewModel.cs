@@ -8,6 +8,6 @@ namespace VegaStore.UI.ViewModels.VehicleViewModels
     {
         public IEnumerable<VehicleViewModel> Vehicles { get; set; }
 
-        public PublicVehicleRequestParametersVM VehicleRequestParametersVM { get; set; }
+        public PaginationDetails PaginationDetails { get; set; }
     }
 }

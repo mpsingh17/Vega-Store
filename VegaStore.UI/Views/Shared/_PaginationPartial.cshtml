@@ -1,0 +1,43 @@
+﻿@model PaginationDetails
+
+<div class="row">
+    <div class="col">
+        <hr />
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPrevious ? "" : "disabled") ">
+                    <a class="page-link"
+                        asp-area=""
+                        asp-action="Index"
+                        asp-route-start="@(Model.Start - Model.Length)"
+                        asp-route-length="@Model.Length">
+                        <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+
+                @for (int i = 0; i < (Model.TotalItemsCount / Model.Length); i++)
+                {
+                    <li class="page-item @((Model.Start / Model.Length) == i ? "active" : "")">
+                        <a class="page-link"
+                            asp-area=""
+                            asp-action="Index"
+                            asp-route-start="@(Model.Length * i)"
+                            asp-route-length="@Model.Length">
+                            @(i + 1)
+                        </a>
+                    </li>
+                }
+
+                <li class="page-item @(Model.HasNext ? "" : "disabled") ">
+                    <a class="page-link"
+                        asp-area=""
+                        asp-action="Index"
+                        asp-route-start="@(Model.Start + Model.Length)"
+                        asp-route-length="@Model.Length">
+                        <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
