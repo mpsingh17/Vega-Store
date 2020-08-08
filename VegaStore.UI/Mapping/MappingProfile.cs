@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using System.Globalization;
 using System.Linq;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Entities;
@@ -50,8 +51,8 @@ namespace VegaStore.UI.Mapping
 
             CreateMap<Vehicle, ListVehicleViewModel>()
                 .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
-                .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c")))
-                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToLongDateString()));
+                .ForMember(vm => vm.Price, opt => opt.MapFrom(v => v.Price.ToString("c", new CultureInfo("en-NZ"))))
+                .ForMember(vm => vm.CreatedAt, opt => opt.MapFrom(v => v.CreatedAt.ToString("dddd, dd MMMM yyyy", CultureInfo.CreateSpecificCulture("en-NZ"))));
 
             //CreateMap<Vehicle, VehicleViewModel>()
             //    .ForMember(vm => vm.Model, opt => opt.MapFrom(v => v.Model.Name))
