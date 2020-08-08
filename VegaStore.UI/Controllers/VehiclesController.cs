@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VegaStore.Core.DbQueryFeatures;
 using VegaStore.Core.Repositories;
@@ -10,6 +11,7 @@ using VegaStore.UI.ViewModels.VehicleViewModels;
 
 namespace VegaStore.UI.Controllers
 {
+    [AllowAnonymous]
     public class VehiclesController : Controller
     {
         private readonly IRepositoryManager _repository;
